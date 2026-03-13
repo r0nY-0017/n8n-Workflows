@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bamboo Dine — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Cormorant+Garamond:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f4f6f2; --bg2:#ffffff; --bg3:#eef2e8;
+  --card:#ffffff; --card2:#f8faf5;
+  --bamboo:#4a7a20; --bamboo2:#6aa030; --bamboo-dark:#2d5a10;
+  --gold:#c8962a; --gold2:#e8b84b;
+  --text:#1a2410; --text2:#2e4418; --muted:#7a8a6a;
+  --border:rgba(74,122,32,.15); --border2:rgba(74,122,32,.25);
+  --shadow:rgba(40,60,20,.1);
+  --red:#cc2a1a; --red-bg:rgba(204,42,26,.07);
+  --green:#2e7a18; --green-bg:rgba(46,122,24,.08);
+  --yellow:#a07010; --yellow-bg:rgba(160,112,16,.08);
+  /* sidebar specific */
+  --sb-bg:#1e3010; --sb-bg2:#162408; --sb-text:rgba(255,255,255,.85);
+  --sb-text2:rgba(255,255,255,.55); --sb-border:rgba(255,255,255,.08);
+  --sb-active:rgba(181,212,90,.15); --sb-active-text:#b5d45a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins','Tiro Bangla',Georgia,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:#3a5010;border-radius:4px}
+button,input,select,textarea{font-family:'Poppins','Tiro Bangla',sans-serif}
+
+@keyframes fadeIn {from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 40%,rgba(143,173,60,.08) 0%,transparent 60%)}
+.login-card{background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:44px 40px;width:340px;text-align:center;animation:slideUp .4s ease}
+.login-logo{font-size:44px;margin-bottom:12px}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
+  color:var(--text);margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.login-input{width:100%;padding:12px 16px;border-radius:12px;
+  border:1.5px solid var(--border);background:var(--bg3);
+  color:var(--text);font-size:14px;outline:none;transition:border-color .2s;margin-bottom:14px}
+.login-input:focus{border-color:var(--bamboo)}
+.login-btn{width:100%;padding:12px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,#3a5a14,#6a9a28);color:#fff;font-size:14px;
+  cursor:pointer;transition:all .22s;font-weight:600}
+.login-btn:hover{box-shadow:0 4px 18px rgba(90,140,40,.4);transform:translateY(-1px)}
+.login-err{color:#e05030;font-size:12px;margin-top:8px;min-height:18px}
+
+/* ── MAIN LAYOUT ── */
+.app{display:none;flex-direction:column;min-height:100vh}
+.app.show{display:flex}
+
+/* ── SIDEBAR ── */
+.sidebar{width:230px;background:var(--sb-bg);border-right:none;
+  display:flex;flex-direction:column;flex-shrink:0;position:fixed;
+  left:0;top:0;bottom:0;z-index:100;
+  box-shadow:4px 0 20px rgba(0,0,0,.15)}
+.sb-logo{padding:22px 20px;border-bottom:1px solid var(--sb-border);
+  display:flex;align-items:center;gap:11px}
+.sb-logo-icon{font-size:26px}
+.sb-logo-name{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;color:#fff;letter-spacing:.2px}
+.sb-logo-name span{display:block;font-size:10px;color:var(--sb-text2);font-family:'Poppins',sans-serif;font-weight:400;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+.sb-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:3px}
+.sb-item{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:10px;
+  cursor:pointer;font-size:13.5px;color:var(--sb-text2);transition:all .18s;border:1px solid transparent;
+  background:none;width:100%;text-align:left;font-family:'Poppins',sans-serif}
+.sb-item:hover{background:rgba(255,255,255,.07);color:var(--sb-text);border-color:transparent}
+.sb-item.active{background:var(--sb-active);color:var(--sb-active-text);border-color:rgba(181,212,90,.25)}
+.sb-icon{font-size:17px;width:22px;text-align:center}
+.sb-badge{margin-left:auto;background:rgba(181,212,90,.25);color:#b5d45a;
+  font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+.sb-bottom{padding:14px 10px;border-top:1px solid var(--sb-border)}
+.sb-today{background:rgba(255,255,255,.06);border-radius:12px;padding:13px 15px;border:1px solid var(--sb-border)}
+.sb-today-label{font-size:10px;color:var(--sb-text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;font-family:'Poppins',sans-serif}
+.sb-today-date{font-family:'Poppins',sans-serif;font-size:13px;color:var(--sb-text);font-weight:500}
+
+/* ── MAIN CONTENT ── */
+.main{margin-left:230px;flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;color:var(--text)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-date{font-size:13px;color:var(--muted);background:var(--bg3);
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border)}
+.logout-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .18s}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+.content{padding:24px;flex:1;animation:fadeIn .3s ease}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent,var(--bamboo))}
+.stat-card-label{font-size:13px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.stat-card-value{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--text)}
+.stat-card-sub{font-size:14px;color:var(--text2);margin-top:3px}
+.stat-card-icon{position:absolute;right:16px;top:16px;font-size:24px;opacity:.2}
+
+/* ── SECTION HEADER ── */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-title{font-family:'Poppins',sans-serif;font-size:19px;font-weight:700;color:var(--text)}
+.sec-actions{display:flex;gap:8px;align-items:center}
+
+/* ── TABLE GRID (Availability) ── */
+.slots-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.slots-date-bar{padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;background:var(--card2)}
+.slots-date-label{font-size:13px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase}
+.date-input{padding:7px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);font-size:13px;outline:none;cursor:pointer}
+.date-input:focus{border-color:var(--bamboo)}
+.refresh-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);
+  background:transparent;color:var(--text2);font-size:12px;cursor:pointer;transition:all .18s}
+.refresh-btn:hover{border-color:var(--bamboo);color:var(--bamboo2)}
+
+.slots-grid-wrap{padding:18px;overflow-x:auto}
+.slots-grid{min-width:520px}
+.slots-header{display:grid;grid-template-columns:100px repeat(6,1fr);gap:6px;margin-bottom:8px}
+.slots-header-cell{text-align:center;font-size:13px;color:var(--muted);letter-spacing:.5px;
+  text-transform:uppercase;padding:6px 0}
+.slots-row{display:grid;grid-template-columns:100px repeat(6,1fr);gap:6px;margin-bottom:6px;align-items:center}
+.slots-row-label{font-size:14px;color:var(--text2);font-weight:600;padding-right:8px}
+.slot-cell{border-radius:8px;padding:8px 4px;text-align:center;cursor:default;
+  transition:all .2s;font-size:12px;position:relative;border:1px solid transparent}
+.slot-cell.available{background:var(--green-bg);border-color:rgba(90,176,64,.25);color:var(--green)}
+.slot-cell.partial {background:var(--yellow-bg);border-color:rgba(212,160,32,.25);color:var(--yellow)}
+.slot-cell.full    {background:var(--red-bg);   border-color:rgba(224,80,48,.25); color:var(--red)}
+.slot-cell .sc-num{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;display:block}
+.slot-cell .sc-lbl{font-size:9px;opacity:.7;letter-spacing:.5px}
+.slots-legend{display:flex;gap:18px;padding:12px 18px;border-top:1px solid var(--border)}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+
+/* ── BOOKINGS TABLE ── */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filter-input{padding:8px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);font-size:13px;outline:none;min-width:180px}
+.filter-input:focus{border-color:var(--bamboo)}
+.filter-select{padding:8px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);font-size:13px;outline:none;cursor:pointer}
+.search-btn{padding:8px 16px;border-radius:8px;border:none;
+  background:linear-gradient(135deg,#3a5a14,#6a9a28);color:#fff;font-size:13px;cursor:pointer;transition:all .2s}
+.search-btn:hover{opacity:.9}
+
+.bookings-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.bookings-table{width:100%;border-collapse:collapse}
+.bookings-table th{background:var(--card2);padding:11px 14px;text-align:left;
+  font-size:13px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;
+  font-weight:600;border-bottom:1px solid var(--border)}
+.bookings-table td{padding:13px 16px;font-size:14px;border-bottom:1px solid rgba(143,173,60,.06);
+  color:var(--text2);vertical-align:middle}
+.bookings-table tr:last-child td{border-bottom:none}
+.bookings-table tr:hover td{background:rgba(143,173,60,.03)}
+.bid{font-family:monospace;font-size:12px;background:var(--bg3);
+  padding:2px 7px;border-radius:6px;color:var(--bamboo2)}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:12px;font-weight:600}
+.status-badge.confirmed{background:var(--green-bg);color:var(--green)}
+.status-badge.cancelled{background:var(--red-bg);color:var(--red)}
+.status-badge.no-show  {background:var(--yellow-bg);color:var(--yellow)}
+.action-btn{padding:5px 11px;border-radius:8px;font-size:12px;cursor:pointer;
+  border:1px solid;transition:all .18s;background:transparent}
+.action-btn.cancel{border-color:rgba(224,80,48,.3);color:var(--red)}
+.action-btn.cancel:hover{background:var(--red-bg)}
+.action-btn.noshow{border-color:rgba(212,160,32,.3);color:var(--yellow)}
+.action-btn.noshow:hover{background:var(--yellow-bg)}
+.no-data{padding:40px;text-align:center;color:var(--muted);font-size:14px}
+.loading-row td{text-align:center;padding:30px;color:var(--muted)}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--bamboo);
+  border-radius:50%;animation:spin 1s linear infinite;display:inline-block}
+
+/* ── MANUAL BOOKING FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:13px;color:var(--muted);letter-spacing:.5px}
+.form-input{padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg3);color:var(--text);font-size:13px;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--bamboo)}
+.form-select{padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg3);color:var(--text);font-size:13px;outline:none;cursor:pointer}
+.form-select:focus{border-color:var(--bamboo)}
+.form-submit{padding:12px 28px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,#3a5a14,#6a9a28);color:#fff;font-size:14px;
+  cursor:pointer;transition:all .22s;font-weight:600}
+.form-submit:hover{box-shadow:0 4px 18px rgba(90,140,40,.4)}
+.form-msg{font-size:12px;margin-top:8px;min-height:18px;padding:6px 10px;border-radius:6px}
+.form-msg.ok{background:var(--green-bg);color:var(--green)}
+.form-msg.err{background:var(--red-bg);color:var(--red)}
+
+/* ── TABS ── */
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeIn .25s ease}
+
+/* ── MODAL (confirm cancel) ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-ov.open{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;max-width:380px;width:90%;animation:slideUp .3s ease;text-align:center}
+.modal-icon{font-size:40px;margin-bottom:14px}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;
+  color:var(--text);margin-bottom:8px}
+.modal-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:22px}
+.modal-id{font-family:monospace;font-size:14px;background:var(--bg3);
+  padding:3px 10px;border-radius:6px;color:var(--bamboo2)}
+.modal-btns{display:flex;gap:10px;justify-content:center}
+.modal-btn{padding:10px 24px;border-radius:10px;font-size:13px;cursor:pointer;transition:all .2s;font-weight:600}
+.modal-btn.confirm{border:none;background:var(--red);color:#fff}
+.modal-btn.confirm:hover{opacity:.9}
+.modal-btn.back{border:1px solid var(--border);background:transparent;color:var(--text2)}
+.modal-btn.back:hover{border-color:var(--bamboo);color:var(--bamboo2)}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:600;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 18px;border-radius:10px;font-size:13px;
+  box-shadow:0 4px 20px var(--shadow);animation:slideUp .3s ease;
+  display:flex;align-items:center;gap:8px;min-width:220px;max-width:320px}
+.toast.ok {background:#1e3a14;border:1px solid rgba(90,176,64,.3);color:#a0d870}
+.toast.err{background:#3a1414;border:1px solid rgba(224,80,48,.3);color:#e08070}
+.toast.info{background:var(--card2);border:1px solid var(--border);color:var(--text2)}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">🎋</div>
+    <div class="login-title">Bamboo Dine</div>
+    <div class="login-sub">Admin Dashboard</div>
+    <input class="login-input" type="password" id="pwInput" placeholder="পাসওয়ার্ড দিন" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">প্রবেশ করুন</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-icon">🎋</div>
+      <div class="sb-logo-name">Bamboo Dine<span>Admin Panel</span></div>
+    </div>
+    <nav class="sb-nav">
+      <button class="sb-item active" onclick="showTab('dashboard',this)"><span class="sb-icon">📊</span> ড্যাশবোর্ড</button>
+      <button class="sb-item" onclick="showTab('bookings',this)"><span class="sb-icon">📋</span> বুকিং লিস্ট <span class="sb-badge" id="sbBadge">—</span></button>
+      <button class="sb-item" onclick="showTab('availability',this)"><span class="sb-icon">🪑</span> টেবিল গ্রিড</button>
+      <button class="sb-item" onclick="showTab('new-booking',this)"><span class="sb-icon">➕</span> নতুন বুকিং</button>
+    </nav>
+    <div class="sb-bottom">
+      <div class="sb-today">
+        <div class="sb-today-label">আজকের তারিখ</div>
+        <div class="sb-today-date" id="sbDate">—</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">ড্যাশবোর্ড</div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbarDate">—</div>
+        <button class="logout-btn" onclick="doLogout()">লগআউট ↩</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- ══ DASHBOARD TAB ══ -->
+      <div class="tab-panel active" id="tab-dashboard">
+        <div class="stats-row">
+          <div class="stat-card" style="--accent:#8fad3c">
+            <div class="stat-card-label">মোট বুকিং</div>
+            <div class="stat-card-value" id="statTotal">—</div>
+            <div class="stat-card-sub">সর্বমোট</div>
+            <div class="stat-card-icon">📋</div>
+          </div>
+          <div class="stat-card" style="--accent:#5ab040">
+            <div class="stat-card-label">আজকের বুকিং</div>
+            <div class="stat-card-value" id="statToday">—</div>
+            <div class="stat-card-sub">আজ</div>
+            <div class="stat-card-icon">📅</div>
+          </div>
+          <div class="stat-card" style="--accent:#c8962a">
+            <div class="stat-card-label">কনফার্ম</div>
+            <div class="stat-card-value" id="statConfirmed">—</div>
+            <div class="stat-card-sub">active বুকিং</div>
+            <div class="stat-card-icon">✅</div>
+          </div>
+          <div class="stat-card" style="--accent:#e05030">
+            <div class="stat-card-label">বাতিল</div>
+            <div class="stat-card-value" id="statCancelled">—</div>
+            <div class="stat-card-sub">cancelled</div>
+            <div class="stat-card-icon">🚫</div>
+          </div>
+        </div>
+
+        <!-- Today's availability quick view -->
+        <div class="sec-header">
+          <div class="sec-title">আজকের টেবিল অবস্থা</div>
+          <div class="sec-actions">
+            <button class="refresh-btn" onclick="loadTodayGrid()">↻ রিফ্রেশ</button>
+          </div>
+        </div>
+        <div class="slots-wrap">
+          <div class="slots-grid-wrap" id="dashGrid">
+            <div style="text-align:center;padding:30px;color:var(--muted)"><div class="spinner"></div></div>
+          </div>
+          <div class="slots-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#5ab040"></div> খালি</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#d4a020"></div> আংশিক</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e05030"></div> পূর্ণ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ BOOKINGS TAB ══ -->
+      <div class="tab-panel" id="tab-bookings">
+        <div class="filter-bar">
+          <input class="filter-input" type="text" id="searchInput" placeholder="🔍 নাম / ফোন / ID খুঁজুন" oninput="debounceSearch()"/>
+          <input class="filter-input" type="date" id="filterDate" onchange="loadBookings()" style="min-width:150px"/>
+          <select class="filter-select" id="filterStatus" onchange="loadBookings()">
+            <option value="all">সব স্ট্যাটাস</option>
+            <option value="confirmed">কনফার্ম</option>
+            <option value="cancelled">বাতিল</option>
+            <option value="no-show">No-show</option>
+          </select>
+          <button class="search-btn" onclick="loadBookings()">খুঁজুন</button>
+        </div>
+        <div class="bookings-table-wrap">
+          <table class="bookings-table">
+            <thead>
+              <tr>
+                <th>বুকিং ID</th>
+                <th>নাম</th>
+                <th>ফোন</th>
+                <th>তারিখ</th>
+                <th>সময়</th>
+                <th>টেবিল</th>
+                <th>জন</th>
+                <th>স্ট্যাটাস</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsBody">
+              <tr class="loading-row"><td colspan="8"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ AVAILABILITY TAB ══ -->
+      <div class="tab-panel" id="tab-availability">
+        <div class="slots-wrap">
+          <div class="slots-date-bar">
+            <div class="slots-date-label">তারিখ বেছে নিন</div>
+            <input class="date-input" type="date" id="availDate" onchange="loadAvailability()"/>
+            <button class="refresh-btn" onclick="loadAvailability()">↻ রিফ্রেশ</button>
+          </div>
+          <div class="slots-grid-wrap" id="availGrid">
+            <div style="text-align:center;padding:40px;color:var(--muted)">তারিখ বেছে নিন</div>
+          </div>
+          <div class="slots-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#5ab040"></div> খালি (০–৩)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#d4a020"></div> আংশিক (৪–৫)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e05030"></div> পূর্ণ (৬/৬)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ NEW BOOKING TAB ══ -->
+      <div class="tab-panel" id="tab-new-booking">
+        <div style="max-width:580px">
+          <div class="sec-header"><div class="sec-title">ম্যানুয়াল বুকিং</div></div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">পুরো নাম *</label>
+                <input class="form-input" type="text" id="f_name" placeholder="অতিথির নাম"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ফোন নম্বর *</label>
+                <input class="form-input" type="tel" id="f_phone" placeholder="01XXXXXXXXX"/>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">ইমেইল</label>
+                <input class="form-input" type="email" id="f_email" placeholder="email@example.com"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">তারিখ *</label>
+                <input class="form-input" type="date" id="f_date" onchange="loadFreeTables()"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">সময় *</label>
+                <select class="form-select" id="f_time" onchange="loadFreeTables()">
+                  <option value="">বেছে নিন</option>
+                  <option value="18:00">সন্ধ্যা ৬:০০</option>
+                  <option value="19:00">সন্ধ্যা ৭:০০</option>
+                  <option value="20:00">রাত ৮:০০</option>
+                  <option value="21:00">রাত ৯:০০</option>
+                  <option value="22:00">রাত ১০:০০</option>
+                  <option value="23:00">রাত ১১:০০</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">টেবিল *</label>
+                <select class="form-select" id="f_table">
+                  <option value="">আগে তারিখ ও সময় দিন</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">অতিথি সংখ্যা *</label>
+                <select class="form-select" id="f_guests">
+                  <option value="1">১ জন</option>
+                  <option value="2">২ জন</option>
+                  <option value="3">৩ জন</option>
+                  <option value="4">৪ জন</option>
+                  <option value="5">৫ জন</option>
+                  <option value="6">৬ জন</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">নোট</label>
+                <input class="form-input" type="text" id="f_notes" placeholder="বিশেষ অনুরোধ (ঐচ্ছিক)"/>
+              </div>
+            </div>
+            <div style="margin-top:18px;display:flex;align-items:center;gap:12px">
+              <button class="form-submit" onclick="submitManualBooking()">বুকিং করুন</button>
+              <div class="form-msg" id="formMsg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div class="modal-ov" id="cancelModal">
+  <div class="modal-box">
+    <div class="modal-icon">🚫</div>
+    <div class="modal-title">বুকিং বাতিল করবেন?</div>
+    <div class="modal-desc">বুকিং <span class="modal-id" id="cancelId">—</span> বাতিল করলে পূর্বাবস্থায় ফেরানো যাবে না।</div>
+    <div class="modal-btns">
+      <button class="modal-btn back" onclick="closeCancelModal()">ফিরে যান</button>
+      <button class="modal-btn confirm" onclick="confirmCancel()">হ্যাঁ, বাতিল করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- UPDATE MODAL -->
+<div class="modal-ov" id="updateModal">
+  <div class="modal-box" style="width:500px;max-width:95vw;text-align:left">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div>
+        <div class="modal-title" style="font-size:18px;margin-bottom:2px">✏️ বুকিং আপডেট</div>
+        <div style="font-size:12px;color:var(--muted)">ID: <span class="modal-id" id="updateId" style="font-size:12px">—</span></div>
+      </div>
+      <button onclick="closeUpdateModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted)">✕</button>
+    </div>
+    <div class="form-grid" style="gap:12px">
+      <div class="form-group">
+        <label class="form-label">নাম</label>
+        <input class="form-input" type="text" id="u_name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ফোন</label>
+        <input class="form-input" type="tel" id="u_phone"/>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">ইমেইল</label>
+        <input class="form-input" type="email" id="u_email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">তারিখ</label>
+        <input class="form-input" type="date" id="u_date" onchange="loadUpdateTables()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">সময়</label>
+        <select class="form-select" id="u_time" onchange="loadUpdateTables()">
+          <option value="18:00">সন্ধ্যা ৬:০০</option>
+          <option value="19:00">সন্ধ্যা ৭:০০</option>
+          <option value="20:00">রাত ৮:০০</option>
+          <option value="21:00">রাত ৯:০০</option>
+          <option value="22:00">রাত ১০:০০</option>
+          <option value="23:00">রাত ১১:০০</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">টেবিল</label>
+        <select class="form-select" id="u_table">
+          <option value="T-1">T-1</option>
+          <option value="T-2">T-2</option>
+          <option value="T-3">T-3</option>
+          <option value="T-4">T-4</option>
+          <option value="T-5">T-5</option>
+          <option value="T-6">T-6</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">অতিথি সংখ্যা</label>
+        <select class="form-select" id="u_guests">
+          <option value="1">১ জন</option><option value="2">২ জন</option>
+          <option value="3">৩ জন</option><option value="4">৪ জন</option>
+          <option value="5">৫ জন</option><option value="6">৬ জন</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">স্ট্যাটাস</label>
+        <select class="form-select" id="u_status">
+          <option value="confirmed">কনফার্ম</option>
+          <option value="cancelled">বাতিল</option>
+          <option value="no-show">No-show</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">নোট</label>
+        <input class="form-input" type="text" id="u_notes"/>
+      </div>
+    </div>
+    <div style="margin-top:18px;display:flex;align-items:center;gap:12px">
+      <button class="modal-btn confirm" style="background:var(--bamboo)" onclick="confirmUpdate()">আপডেট করুন</button>
+      <button class="modal-btn back" onclick="closeUpdateModal()">বাতিল</button>
+      <div class="form-msg" id="updateMsg" style="flex:1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+const SLOTS = ['18:00','19:00','20:00','21:00','22:00','23:00'];
+const SLOT_LABELS = ['৬:০০','৭:০০','৮:০০','৯:০০','১০:০০','১১:০০'];
+const TABLE_LABELS = ['T-1','T-2','T-3','T-4','T-5','T-6'];
+const MAX_PER_SLOT = 6;
+
+let token = null;
+let cancelTarget = null;
+let searchTimer = null;
+
+// ── Date helpers ──
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function fmtDate(d){
+  if(!d) return '—';
+  const [y,m,day] = d.split('-');
+  const bnM = ['জানু','ফেব্রু','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টে','অক্টো','নভে','ডিসে'];
+  return `${day} ${bnM[parseInt(m)-1]} ${y}`;
+}
+function fmtTime(t){
+  if(!t) return '—';
+  const [h,m] = t.split(':').map(Number);
+  const p = h<12?'সকাল':h<17?'বিকাল':h<20?'সন্ধ্যা':'রাত';
+  const h12 = h>12?h-12:(h===0?12:h);
+  return `${p} ${h12}:${String(m).padStart(2,'0')}`;
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded',()=>{
+  const today = todayStr();
+  document.getElementById('sbDate').textContent = fmtDate(today);
+  document.getElementById('topbarDate').textContent = fmtDate(today);
+  document.getElementById('availDate').value = today;
+  document.getElementById('filterDate').value = today;
+  document.getElementById('f_date').value = today;
+  document.getElementById('f_date').min = today;
+
+  // Check if already logged in
+  token = sessionStorage.getItem('bd_token');
+  if(token) showApp();
+});
+
+// ── Login ──
+async function doLogin(){
+  const pw = document.getElementById('pwInput').value;
+  if(!pw){ document.getElementById('loginErr').textContent='পাসওয়ার্ড দিন'; return; }
+  try{
+    const r = await fetch('/api/admin/login',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({password:pw})
+    });
+    const d = await r.json();
+    if(r.ok && d.success){
+      token = d.token;
+      sessionStorage.setItem('bd_token', token);
+      showApp();
+    } else {
+      document.getElementById('loginErr').textContent = d.detail || 'ভুল পাসওয়ার্ড';
+    }
+  }catch(e){
+    document.getElementById('loginErr').textContent = 'সংযোগ ব্যর্থ: '+e.message;
+  }
+}
+function showApp(){
+  document.getElementById('loginWrap').style.display='none';
+  document.getElementById('app').classList.add('show');
+  loadStats();
+  loadTodayGrid();
+  loadBookings();
+}
+function doLogout(){
+  sessionStorage.removeItem('bd_token');
+  token = null;
+  document.getElementById('loginWrap').style.display='flex';
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('pwInput').value='';
+}
+
+// ── Tabs ──
+function showTab(name, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  const titles = {dashboard:'ড্যাশবোর্ড', bookings:'বুকিং লিস্ট', availability:'টেবিল গ্রিড', 'new-booking':'নতুন বুকিং'};
+  document.getElementById('topbarTitle').textContent = titles[name]||name;
+  if(name==='bookings')    loadBookings();
+  if(name==='availability')loadAvailability();
+  if(name==='dashboard')   { loadStats(); loadTodayGrid(); }
+}
+
+// ── Stats ──
+async function loadStats(){
+  try{
+    const r = await fetch('/api/stats');
+    const d = await r.json();
+    document.getElementById('statTotal').textContent     = d.total     ?? '—';
+    document.getElementById('statToday').textContent     = d.today     ?? '—';
+    document.getElementById('statConfirmed').textContent = d.confirmed ?? '—';
+    document.getElementById('statCancelled').textContent = d.cancelled ?? '—';
+    document.getElementById('sbBadge').textContent       = d.today     ?? '—';
+  }catch(e){ console.error('stats', e); }
+}
+
+// ── Availability Grid ──
+function buildGrid(slots_data){
+  // slots_data: [{time, booked, total}]
+  const html = `
+  <div class="slots-grid">
+    <div class="slots-header">
+      <div class="slots-header-cell">টেবিল</div>
+      ${SLOT_LABELS.map(l=>`<div class="slots-header-cell">${l}</div>`).join('')}
+    </div>
+    ${TABLE_LABELS.map((tbl,ti)=>`
+      <div class="slots-row">
+        <div class="slots-row-label">🪑 ${tbl}</div>
+        ${slots_data.map((slot,si)=>{
+          // Each table can have 0 or 1 booking per slot
+          // We show table-level: if booked >= ti+1 → this table is taken
+          const booked = slot.booked || 0;
+          const isBooked = booked > ti;
+          const cls = isBooked ? 'full' : 'available';
+          const lbl = isBooked ? 'বুকড' : 'খালি';
+          return `<div class="slot-cell ${cls}"><span class="sc-num">${isBooked?'✕':'✓'}</span><span class="sc-lbl">${lbl}</span></div>`;
+        }).join('')}
+      </div>`).join('')}
+  </div>
+  <div style="margin-top:12px;padding:0 4px">
+    <div style="display:grid;grid-template-columns:100px repeat(6,1fr);gap:6px">
+      <div style="font-size:13px;color:var(--muted)">মোট বুকড</div>
+      ${slots_data.map(s=>{
+        const b = s.booked||0;
+        const cls = b===0?'available':b<MAX_PER_SLOT?'partial':'full';
+        return `<div class="slot-cell ${cls}" style="font-size:13px"><span class="sc-num">${b}/${MAX_PER_SLOT}</span><span class="sc-lbl">বুকিং</span></div>`;
+      }).join('')}
+    </div>
+  </div>`;
+  return html;
+}
+
+async function loadTodayGrid(){
+  const today = todayStr();
+  document.getElementById('dashGrid').innerHTML='<div style="text-align:center;padding:30px;color:var(--muted)"><div class="spinner"></div></div>';
+  try{
+    const r = await fetch(`/api/availability?date=${today}`);
+    const d = await r.json();
+    document.getElementById('dashGrid').innerHTML = buildGrid(d.slots||[]);
+  }catch(e){
+    document.getElementById('dashGrid').innerHTML='<div style="padding:20px;color:var(--red);font-size:13px">লোড হয়নি: '+e.message+'</div>';
+  }
+}
+
+async function loadAvailability(){
+  const date = document.getElementById('availDate').value || todayStr();
+  document.getElementById('availGrid').innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><div class="spinner"></div></div>';
+  try{
+    const r = await fetch(`/api/availability?date=${date}`);
+    const d = await r.json();
+    document.getElementById('availGrid').innerHTML = buildGrid(d.slots||[]);
+  }catch(e){
+    document.getElementById('availGrid').innerHTML='<div style="padding:20px;color:var(--red);font-size:13px">লোড হয়নি: '+e.message+'</div>';
+  }
+}
+
+// ── Bookings ──
+function debounceSearch(){
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(loadBookings, 400);
+}
+
+async function loadBookings(){
+  const search = document.getElementById('searchInput')?.value||'';
+  const date   = document.getElementById('filterDate')?.value||'';
+  const status = document.getElementById('filterStatus')?.value||'all';
+  document.getElementById('bookingsBody').innerHTML =
+    '<tr class="loading-row"><td colspan="8"><div class="spinner"></div></td></tr>';
+  try{
+    const params = new URLSearchParams({search,date,status});
+    const r = await fetch(`/api/bookings?${params}`);
+    const d = await r.json();
+    renderBookings(d.bookings||[]);
+  }catch(e){
+    document.getElementById('bookingsBody').innerHTML =
+      `<tr><td colspan="8" class="no-data">❌ লোড হয়নি: ${e.message}</td></tr>`;
+  }
+}
+
+function renderBookings(list){
+  if(!list.length){
+    document.getElementById('bookingsBody').innerHTML =
+      '<tr><td colspan="9" class="no-data">কোনো বুকিং নেই</td></tr>';
+    return;
+  }
+  document.getElementById('bookingsBody').innerHTML = list.map(b=>{
+    const statusClass = b.status==='confirmed'?'confirmed':b.status==='cancelled'?'cancelled':'no-show';
+    const statusLabel = b.status==='confirmed'?'কনফার্ম':b.status==='cancelled'?'বাতিল':'No-show';
+    const canCancel   = b.status==='confirmed';
+    const bj = encodeURIComponent(JSON.stringify(b));
+    return `<tr>
+      <td><span class="bid">${b.id||'—'}</span></td>
+      <td>${b.name||'—'}</td>
+      <td>${b.phone||'—'}</td>
+      <td>${fmtDate(b.date)}</td>
+      <td>${fmtTime(b.time)}</td>
+      <td style="text-align:center;font-weight:600;color:var(--bamboo-dark)">${b.table||'—'}</td>
+      <td style="text-align:center">${b.guests||'—'}</td>
+      <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="action-btn" onclick="openUpdateModal(decodeURIComponent('${bj}'))" style="border-color:rgba(90,140,40,.3);color:var(--bamboo-dark)">✏️ আপডেট</button>
+        ${canCancel?`<button class="action-btn cancel" onclick="openCancelModal('${b.id}')">🚫 বাতিল</button>`:''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Cancel ──
+function openCancelModal(id){
+  cancelTarget = id;
+  document.getElementById('cancelId').textContent = id;
+  document.getElementById('cancelModal').classList.add('open');
+}
+function closeCancelModal(){
+  cancelTarget = null;
+  document.getElementById('cancelModal').classList.remove('open');
+}
+async function confirmCancel(){
+  if(!cancelTarget) return;
+  closeCancelModal();
+  try{
+    const r = await fetch('/api/bookings/cancel',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({booking_id: cancelTarget})
+    });
+    const d = await r.json();
+    if(r.ok && d.success){
+      showToast('বুকিং বাতিল হয়েছে ✓','ok');
+      loadBookings(); loadStats(); loadTodayGrid();
+    } else {
+      showToast(d.detail||'বাতিল করা যায়নি','err');
+    }
+  }catch(e){ showToast('সমস্যা: '+e.message,'err'); }
+}
+
+// ── Free Tables Loader (New Booking Form) ──
+async function loadFreeTables(){
+  const date  = document.getElementById('f_date').value;
+  const time  = document.getElementById('f_time').value;
+  const sel   = document.getElementById('f_table');
+  if(!date || !time){
+    sel.innerHTML = '<option value="">আগে তারিখ ও সময় দিন</option>';
+    return;
+  }
+  sel.innerHTML = '<option value="">লোড হচ্ছে…</option>';
+  try{
+    const r = await fetch(`/api/availability?date=${date}`);
+    const d = await r.json();
+    const slot = (d.slots||[]).find(s=>s.time===time);
+    const free = slot ? slot.free_tables : ['T-1','T-2','T-3','T-4','T-5','T-6'];
+    if(!free.length){
+      sel.innerHTML = '<option value="">এই সময়ে কোনো টেবিল খালি নেই</option>';
+    } else {
+      sel.innerHTML = free.map(t=>`<option value="${t}">${t}</option>`).join('');
+    }
+  } catch(e){
+    sel.innerHTML = ['T-1','T-2','T-3','T-4','T-5','T-6'].map(t=>`<option value="${t}">${t}</option>`).join('');
+  }
+}
+
+// ── Manual Booking ──
+async function submitManualBooking(){
+  const name   = document.getElementById('f_name').value.trim();
+  const phone  = document.getElementById('f_phone').value.trim();
+  const email  = document.getElementById('f_email').value.trim();
+  const date   = document.getElementById('f_date').value;
+  const time   = document.getElementById('f_time').value;
+  const table  = document.getElementById('f_table').value;
+  const guests = parseInt(document.getElementById('f_guests').value);
+  const notes  = document.getElementById('f_notes').value.trim();
+  const msg    = document.getElementById('formMsg');
+
+  if(!name||!phone||!date||!time||!table){
+    msg.className='form-msg err'; msg.textContent='নাম, ফোন, তারিখ, সময় ও টেবিল আবশ্যক'; return;
+  }
+  msg.className='form-msg info'; msg.textContent='বুকিং হচ্ছে…';
+  try{
+    const r = await fetch('/api/bookings',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,phone,email,date,time,table,guests,notes})
+    });
+    const d = await r.json();
+    if(r.ok && d.success){
+      msg.className='form-msg ok'; msg.textContent=`✓ বুকিং সম্পন্ন! ID: ${d.booking.id} | টেবিল: ${d.booking.table}`;
+      showToast(`বুকিং কনফার্ম: ${d.booking.id} — ${d.booking.table}`,'ok');
+      loadStats(); loadTodayGrid();
+      ['f_name','f_phone','f_email','f_notes'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('f_table').innerHTML='<option value="">আগে তারিখ ও সময় দিন</option>';
+    } else {
+      msg.className='form-msg err'; msg.textContent=d.detail||'বুকিং হয়নি';
+    }
+  }catch(e){ msg.className='form-msg err'; msg.textContent='সমস্যা: '+e.message; }
+}
+
+// ── Update Modal ──
+let updateTarget = null;
+
+function openUpdateModal(bjStr){
+  const b = typeof bjStr === 'string' ? JSON.parse(bjStr) : bjStr;
+  updateTarget = b.id;
+  document.getElementById('updateId').textContent  = b.id;
+  document.getElementById('u_name').value    = b.name   || '';
+  document.getElementById('u_phone').value   = b.phone  || '';
+  document.getElementById('u_email').value   = b.email  || '';
+  document.getElementById('u_date').value    = b.date   || '';
+  document.getElementById('u_time').value    = b.time   || '18:00';
+  document.getElementById('u_guests').value  = String(b.guests || '2');
+  document.getElementById('u_status').value  = b.status || 'confirmed';
+  document.getElementById('u_notes').value   = b.notes  || '';
+  document.getElementById('updateMsg').textContent = '';
+  document.getElementById('updateMsg').className   = 'form-msg';
+  // Table select — show all options, select current
+  const allTables = ['T-1','T-2','T-3','T-4','T-5','T-6'];
+  const uSel = document.getElementById('u_table');
+  uSel.innerHTML = allTables.map(t=>`<option value="${t}"${t===b.table?' selected':''}>${t}</option>`).join('');
+  document.getElementById('updateModal').classList.add('open');
+}
+
+function closeUpdateModal(){
+  updateTarget = null;
+  document.getElementById('updateModal').classList.remove('open');
+}
+
+async function loadUpdateTables(){
+  const date = document.getElementById('u_date').value;
+  const time = document.getElementById('u_time').value;
+  const sel  = document.getElementById('u_table');
+  const cur  = sel.value;
+  if(!date || !time) return;
+  try{
+    const r = await fetch(`/api/availability?date=${date}`);
+    const d = await r.json();
+    const slot = (d.slots||[]).find(s=>s.time===time);
+    const free = slot ? slot.free_tables : ['T-1','T-2','T-3','T-4','T-5','T-6'];
+    // current table সবসময় option-এ রাখবো (already booked হলেও)
+    const all = [...new Set([cur, ...free].filter(Boolean))];
+    sel.innerHTML = all.map(t=>`<option value="${t}"${t===cur?' selected':''}>${t}${!free.includes(t)?' (বর্তমান)':''}</option>`).join('');
+  } catch(e){ /* keep existing options */ }
+}
+
+async function confirmUpdate(){
+  if(!updateTarget) return;
+  const msg = document.getElementById('updateMsg');
+  msg.className='form-msg info'; msg.textContent='আপডেট হচ্ছে…';
+  const payload = {
+    booking_id: updateTarget,
+    name:    document.getElementById('u_name').value.trim(),
+    phone:   document.getElementById('u_phone').value.trim(),
+    email:   document.getElementById('u_email').value.trim(),
+    date:    document.getElementById('u_date').value,
+    time:    document.getElementById('u_time').value,
+    table:   document.getElementById('u_table').value,
+    guests:  parseInt(document.getElementById('u_guests').value),
+    status:  document.getElementById('u_status').value,
+    notes:   document.getElementById('u_notes').value.trim(),
+  };
+  try{
+    const r = await fetch('/api/bookings/update',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const d = await r.json();
+    if(r.ok && d.success){
+      msg.className='form-msg ok'; msg.textContent='✓ আপডেট সম্পন্ন!';
+      showToast(`বুকিং ${updateTarget} আপডেট হয়েছে`,'ok');
+      setTimeout(closeUpdateModal, 800);
+      loadBookings(); loadStats(); loadTodayGrid();
+    } else {
+      msg.className='form-msg err'; msg.textContent=d.detail||'আপডেট হয়নি';
+    }
+  }catch(e){ msg.className='form-msg err'; msg.textContent='সমস্যা: '+e.message; }
+}
+
+// ── Toast ──
+function showToast(msg, type='info'){
+  const t = document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML = `<span>${type==='ok'?'✓':type==='err'?'✕':'ℹ'}</span>${msg}`;
+  document.getElementById('toastWrap').appendChild(t);
+  setTimeout(()=>t.remove(), 3500);
+}
+</script>
+</body>
+</html>

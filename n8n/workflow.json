@@ -1,0 +1,177 @@
+{
+  "name": "Bamboo Dine — Update Booking",
+  "nodes": [
+    {
+      "id": "9daa262e-b150-47a3-9a99-231f11a648a8",
+      "name": "Update Booking Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1640,
+        300
+      ],
+      "webhookId": "c925bbb6-b8bd-45db-9611-4522e0dbeadb",
+      "parameters": {
+        "path": "bamboo-update",
+        "httpMethod": "POST",
+        "responseMode": "responseNode"
+      }
+    },
+    {
+      "id": "917c449d-2340-4333-be1c-7cb62fabf31d",
+      "name": "Read Sheet for Update",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1860,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GSHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      },
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Bookings",
+          "mode": "name"
+        }
+      }
+    },
+    {
+      "id": "d1387ae7-7d36-495e-9938-b711c30f22cf",
+      "name": "Find and Update Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const req  = $('Update Booking Webhook').first().json.body;\nconst bid  = req.booking_id || '';\nconst rows = $input.all();\n\n// booking_id দিয়ে row খুঁজি (1-indexed, row 1 = header)\nlet rowIndex = -1;\nfor(let i = 0; i < rows.length; i++){\n  if(rows[i].json.ID === bid){\n    rowIndex = i + 2; // +2: row 1 header, i 0-indexed\n    break;\n  }\n}\n\nif(rowIndex === -1){\n  return [{ json: { success: false, error: `Booking ${bid} not found`, rowIndex: -1 } }];\n}\n\nconst existing = rows[rowIndex - 2].json;\n\n// Only update provided fields — বাকিগুলো existing value রাখো\nconst updated = {\n  ID:         existing.ID,\n  Name:       req.name    !== undefined ? req.name    : existing.Name,\n  Phone:      req.phone   !== undefined ? req.phone   : existing.Phone,\n  Email:      req.email   !== undefined ? req.email   : existing.Email,\n  Date:       req.date    !== undefined ? req.date    : existing.Date,\n  Time:       req.time    !== undefined ? req.time    : existing.Time,\n  Table:      req.table   !== undefined ? req.table   : existing.Table,\n  Guests:     req.guests  !== undefined ? String(req.guests) : existing.Guests,\n  Status:     req.status  !== undefined ? req.status  : existing.Status,\n  Source:     existing.Source,\n  Notes:      req.notes   !== undefined ? req.notes   : existing.Notes,\n  Created_At: existing.Created_At,\n};\n\nreturn [{ json: { ...updated, _rowIndex: rowIndex, success: true } }];"
+      }
+    },
+    {
+      "id": "fec8f2f9-be51-4a9e-a169-19cc0fce7e56",
+      "name": "Write Updated Row",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2300,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GSHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Bookings",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.ID }}",
+            "Name": "={{ $json.Name }}",
+            "Phone": "={{ $json.Phone }}",
+            "Email": "={{ $json.Email }}",
+            "Date": "={{ $json.Date }}",
+            "Time": "={{ $json.Time }}",
+            "Table": "={{ $json.Table }}",
+            "Guests": "={{ $json.Guests }}",
+            "Status": "={{ $json.Status }}",
+            "Source": "={{ $json.Source }}",
+            "Notes": "={{ $json.Notes }}",
+            "Created_At": "={{ $json.Created_At }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": []
+        }
+      }
+    },
+    {
+      "id": "2f8c89cb-d960-4133-bd96-d5b2c8195bf8",
+      "name": "Respond Update",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        2520,
+        300
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"success\":true,\"booking_id\":\"{{ $(\"Update Booking Webhook\").first().json.body.booking_id }}\"}"
+      }
+    }
+  ],
+  "connections": {
+    "Update Booking Webhook": {
+      "main": [
+        [
+          {
+            "node": "Read Sheet for Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Sheet for Update": {
+      "main": [
+        [
+          {
+            "node": "Find and Update Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find and Update Row": {
+      "main": [
+        [
+          {
+            "node": "Write Updated Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Updated Row": {
+      "main": [
+        [
+          {
+            "node": "Respond Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bamboo Dine — ঐতিহ্যবাহী বাংলা রান্না</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#1a1f0e; --ink2:#2e3a1a; --muted:#6b7a52;
+  --bamboo:#8fad3c; --bamboo2:#b5d45a; --bamboo-dark:#4a6420;
+  --gold:#c8962a; --gold2:#e8b84b;
+  --cream:#f7f9f0; --cream2:#eef2e4;
+  --bg-dark:#141a09; --bg-dark2:#1e2a0e;
+  --border:rgba(143,173,60,.22); --shadow:rgba(20,26,9,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Tiro Bangla','Noto Serif Bengali',Georgia,serif;background:var(--cream);color:var(--ink2);overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:#a8bc70;border-radius:4px}
+input,select,textarea,button{font-family:'Tiro Bangla',serif}
+
+/* ══ BAMBOO SVG DECORATIONS (CSS-drawn) ══ */
+@keyframes fadeUp  {from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn  {from{opacity:0}to{opacity:1}}
+@keyframes sway    {0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+@keyframes swayR   {0%,100%{transform:rotate(1.5deg)}50%{transform:rotate(-1.5deg)}}
+@keyframes shimmer {0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes pulse   {0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes ripple  {0%{transform:scale(1);opacity:.5}100%{transform:scale(2.6);opacity:0}}
+@keyframes marquee {0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes slideUp {from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
+@keyframes grow    {from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+@keyframes leafwave{0%,100%{transform:rotate(-4deg) translateX(0)}50%{transform:rotate(4deg) translateX(3px)}}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ══ BAMBOO STALK DECORATION ══ */
+.bamboo-stalk{
+  position:absolute;bottom:0;width:28px;
+  display:flex;flex-direction:column;align-items:center;
+  transform-origin:bottom center;
+  pointer-events:none;
+}
+.bamboo-stalk .seg{
+  width:22px;background:linear-gradient(90deg,#5a7a28 0%,#8fad3c 40%,#a8c44a 60%,#6a8a30 100%);
+  border-radius:3px;position:relative;margin-bottom:1px;
+}
+.bamboo-stalk .seg::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:rgba(0,0,0,.25);border-radius:0 0 3px 3px;
+}
+.bamboo-stalk .seg::before{
+  content:'';position:absolute;top:3px;left:3px;right:3px;height:1px;
+  background:rgba(255,255,255,.2);border-radius:1px;
+}
+.bamboo-leaf{
+  position:absolute;width:32px;height:14px;
+  background:linear-gradient(135deg,#7aa030,#a8c440);
+  border-radius:0 50% 50% 0;transform-origin:left center;
+  animation:leafwave 3s ease-in-out infinite;
+}
+
+/* ══ NAVBAR ══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;height:68px;
+  background:rgba(247,249,240,0);border-bottom:1px solid transparent;
+  transition:background .35s,border-color .35s,backdrop-filter .35s}
+nav.scrolled{background:rgba(247,249,240,.95);border-color:var(--border);
+  backdrop-filter:blur(16px);box-shadow:0 2px 20px var(--shadow)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;
+  color:#fff;display:flex;align-items:center;gap:9px;text-decoration:none;letter-spacing:.3px}
+nav.scrolled .nav-logo{color:var(--ink)}
+.nav-logo-icon{width:34px;height:34px;display:flex;align-items:flex-end;justify-content:center;gap:3px}
+.nav-logo-icon .ns{width:5px;background:linear-gradient(to top,#4a6420,#8fad3c);border-radius:3px 3px 0 0}
+.nav-links{display:flex;gap:30px;list-style:none}
+.nav-links a{font-size:13px;color:rgba(255,255,255,.75);text-decoration:none;letter-spacing:.4px;transition:color .2s;position:relative}
+nav.scrolled .nav-links a{color:var(--muted)}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;
+  background:var(--bamboo2);transform:scaleX(0);transition:transform .22s}
+.nav-links a:hover{color:#fff}
+nav.scrolled .nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{padding:9px 22px;border-radius:30px;border:1.5px solid rgba(255,255,255,.35);
+  background:transparent;color:#fff;font-size:13px;cursor:pointer;transition:all .22s}
+.nav-cta:hover{background:var(--bamboo);border-color:var(--bamboo);color:#fff;box-shadow:0 4px 16px rgba(143,173,60,.4)}
+nav.scrolled .nav-cta{border-color:var(--bamboo);color:var(--bamboo-dark)}
+nav.scrolled .nav-cta:hover{background:var(--bamboo);color:#fff}
+
+/* ══ HERO ══ */
+.hero{min-height:100vh;
+  background:linear-gradient(160deg,#0e1608 0%,#1a2a0a 45%,#121a07 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;padding:100px 5% 80px;text-align:center}
+/* Bamboo grove overlay — SVG pattern */
+.hero::before{content:'';position:absolute;inset:0;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='200'%3E%3Crect x='10' width='8' height='200' rx='4' fill='%238fad3c'/%3E%3Crect x='24' y='20' width='6' height='180' rx='3' fill='%236a8a30'/%3E%3Crect x='48' y='10' width='7' height='190' rx='3' fill='%238fad3c'/%3E%3Crect x='62' y='30' width='5' height='170' rx='2' fill='%236a8a30'/%3E%3Crect x='10' y='40' width='28' height='3' rx='1' fill='%23a8c440'/%3E%3Crect x='10' y='90' width='28' height='3' rx='1' fill='%23a8c440'/%3E%3Crect x='10' y='140' width='28' height='3' rx='1' fill='%23a8c440'/%3E%3Crect x='44' y='55' width='24' height='3' rx='1' fill='%23a8c440'/%3E%3Crect x='44' y='110' width='24' height='3' rx='1' fill='%23a8c440'/%3E%3Crect x='44' y='165' width='24' height='3' rx='1' fill='%23a8c440'/%3E%3C/svg%3E");
+  background-size:80px 200px;}
+.hero::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 60%,rgba(143,173,60,.12) 0%,transparent 55%),
+             radial-gradient(ellipse at 75% 25%,rgba(200,150,42,.07) 0%,transparent 45%)}
+
+/* Bamboo stalks left/right */
+.bamboo-left,.bamboo-right{position:absolute;bottom:0;z-index:1;pointer-events:none;display:flex;gap:10px;align-items:flex-end}
+.bamboo-left{left:0;transform-origin:bottom left}
+.bamboo-right{right:0;transform-origin:bottom right}
+
+.hero-content{position:relative;z-index:2;max-width:740px;margin:0 auto;animation:fadeUp .9s ease both}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;padding:6px 18px;
+  border:1px solid rgba(143,173,60,.35);border-radius:30px;margin-bottom:26px;
+  font-size:11px;color:var(--bamboo2);letter-spacing:1.6px;text-transform:uppercase;
+  background:rgba(143,173,60,.08)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(46px,8vw,86px);
+  font-weight:700;line-height:.94;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:var(--bamboo2);display:block;font-size:clamp(34px,6vw,64px)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.5);line-height:1.85;margin:20px auto 38px;max-width:480px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-bamboo{padding:14px 34px;border-radius:40px;border:none;
+  background:linear-gradient(135deg,#5a7a28,#8fad3c);color:#fff;font-size:15px;
+  cursor:pointer;box-shadow:0 6px 24px rgba(90,122,40,.42);transition:all .25s}
+.btn-bamboo:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(90,122,40,.55)}
+.btn-ghost{padding:14px 34px;border-radius:40px;
+  border:1.5px solid rgba(255,255,255,.22);background:transparent;
+  color:rgba(255,255,255,.75);font-size:15px;cursor:pointer;transition:all .22s}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.07)}
+.hero-stats{position:absolute;bottom:0;left:0;right:0;z-index:2;
+  display:flex;justify-content:center;border-top:1px solid rgba(255,255,255,.06)}
+.hstat{padding:18px 36px;text-align:center;border-right:1px solid rgba(255,255,255,.06);flex:1;max-width:170px}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:700;color:var(--bamboo2)}
+.hstat-l{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.7px;margin-top:2px}
+
+/* ══ MARQUEE ══ */
+.marquee-strip{background:linear-gradient(90deg,#4a6420,#6a8a30,#4a6420);padding:12px 0;overflow:hidden}
+.marquee-inner{display:flex;white-space:nowrap;animation:marquee 22s linear infinite}
+.mitem{display:inline-flex;align-items:center;gap:10px;padding:0 26px;
+  font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#e8f0c8;letter-spacing:.4px}
+.mdot{width:5px;height:5px;border-radius:50%;background:var(--bamboo2);opacity:.6}
+
+/* ══ SECTION BASE ══ */
+section{padding:88px 5%}
+.stag{display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--bamboo-dark);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.stag::before,.stag::after{content:'';width:26px;height:1.5px;background:var(--bamboo);opacity:.5}
+.stitle{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4.5vw,50px);
+  font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:12px}
+.stitle em{font-style:italic;color:var(--bamboo-dark)}
+.ssub{font-size:15px;color:var(--muted);line-height:1.85;max-width:500px}
+
+/* Bamboo divider */
+.bamboo-divider{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0 28px}
+.bamboo-divider::before,.bamboo-divider::after{content:'';flex:1;max-width:120px;height:1px;background:var(--border)}
+.bamboo-divider span{font-size:18px;opacity:.5}
+
+/* ══ ABOUT ══ */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:48px}
+.about-visual{position:relative}
+.about-img{width:100%;aspect-ratio:4/5;border-radius:20px;
+  background:linear-gradient(145deg,#1a2a0a,#2d4a14);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 20px 60px var(--shadow);position:relative;overflow:hidden}
+.about-img::before{content:'';position:absolute;inset:0;opacity:.15;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='160'%3E%3Crect x='8' width='7' height='160' rx='3' fill='%238fad3c'/%3E%3Crect x='22' y='15' width='5' height='145' rx='2' fill='%236a8a30'/%3E%3Crect x='38' y='5' width='6' height='155' rx='3' fill='%238fad3c'/%3E%3Crect x='8' y='35' width='24' height='2.5' rx='1' fill='%23b5d45a'/%3E%3Crect x='8' y='80' width='24' height='2.5' rx='1' fill='%23b5d45a'/%3E%3Crect x='8' y='125' width='24' height='2.5' rx='1' fill='%23b5d45a'/%3E%3Crect x='34' y='50' width='18' height='2.5' rx='1' fill='%23b5d45a'/%3E%3Crect x='34' y='100' width='18' height='2.5' rx='1' fill='%23b5d45a'/%3E%3Crect x='34' y='148' width='18' height='2.5' rx='1' fill='%23b5d45a'/%3E%3C/svg%3E");
+  background-size:60px 160px;}
+.about-img::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.4) 0%,transparent 55%)}
+.about-img-inner{position:relative;z-index:1;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center}
+.about-badge{position:absolute;bottom:-18px;right:-18px;width:108px;height:108px;
+  border-radius:50%;background:linear-gradient(135deg,#4a6420,#8fad3c);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 8px 28px rgba(74,100,32,.42);font-family:'Cormorant Garamond',serif;color:#fff;text-align:center}
+.about-badge .bn{font-size:26px;font-weight:700;line-height:1}
+.about-badge .bl{font-size:10px;opacity:.85;margin-top:3px}
+.about-text p{font-size:15px;color:var(--muted);line-height:1.92;margin-bottom:15px}
+.feats{display:flex;flex-direction:column;gap:13px;margin-top:26px}
+.feat{display:flex;align-items:center;gap:13px}
+.feat-ic{width:43px;height:43px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(143,173,60,.14),rgba(143,173,60,.05));
+  border:1px solid rgba(143,173,60,.22);
+  display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.feat strong{display:block;font-size:14px;color:var(--ink);margin-bottom:1px}
+.feat span{font-size:12px;color:var(--muted)}
+
+/* ══ MENU ══ */
+.menu-sec{background:var(--cream2)}
+.menu-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:38px 0 34px;justify-content:center}
+.mtab{padding:8px 20px;border-radius:28px;border:1.5px solid var(--border);
+  background:transparent;color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s}
+.mtab.active{background:linear-gradient(135deg,#5a7a28,#8fad3c);border-color:transparent;color:#fff;
+  box-shadow:0 4px 14px rgba(90,122,40,.32)}
+.mtab:hover:not(.active){border-color:var(--bamboo);color:var(--bamboo-dark)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
+
+/* ── MENU CARD ── */
+.mcard{background:#fff;border-radius:18px;overflow:hidden;
+  border:1px solid rgba(143,173,60,.12);box-shadow:0 2px 20px var(--shadow);
+  transition:transform .24s,box-shadow .24s;cursor:pointer;position:relative}
+.mcard:hover{transform:translateY(-4px);box-shadow:0 14px 40px var(--shadow)}
+.mcard-img{height:200px;position:relative;overflow:hidden;background:#e8f0d0}
+.mcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.mcard:hover .mcard-img img{transform:scale(1.05)}
+.mcard-img-loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#d4e4a0,#e8f0c8);z-index:1;transition:opacity .3s}
+.mcard-img-loader.loaded{opacity:0;pointer-events:none}
+.mcard-img-loader-inner{width:30px;height:30px;border:2px solid var(--bamboo);border-top-color:transparent;
+  border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* bamboo corner accent */
+.mcard::before{content:'';position:absolute;top:0;right:0;width:0;height:0;
+  border-style:solid;border-width:0 36px 36px 0;
+  border-color:transparent rgba(143,173,60,.15) transparent transparent;z-index:2}
+.mcard-body{padding:17px 19px 19px}
+.mcard-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.mcard-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;
+  color:var(--ink);line-height:1.2}
+.mcard-price{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;
+  color:var(--bamboo-dark);white-space:nowrap;flex-shrink:0}
+.mcard-desc{font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:6px}
+.mcard-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:11px}
+.mtag{padding:3px 9px;border-radius:18px;font-size:11px;
+  background:rgba(143,173,60,.1);color:var(--bamboo-dark);border:1px solid rgba(143,173,60,.22)}
+.mtag.spicy{background:rgba(192,57,43,.07);color:#c0392b;border-color:rgba(192,57,43,.14)}
+.mtag.popular{background:rgba(74,100,32,.09);color:#3a5010;border-color:rgba(74,100,32,.18)}
+
+/* ══ SPECIALS ══ */
+.specials{background:linear-gradient(135deg,#0e1608 0%,#1a2a0a 100%);
+  padding:80px 5%;position:relative;overflow:hidden}
+.specials::before{content:'';position:absolute;inset:0;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='200'%3E%3Crect x='10' width='8' height='200' rx='4' fill='%238fad3c'/%3E%3Crect x='24' y='20' width='6' height='180' rx='3' fill='%236a8a30'/%3E%3Crect x='48' y='10' width='7' height='190' rx='3' fill='%238fad3c'/%3E%3Crect x='62' y='30' width='5' height='170' rx='2' fill='%236a8a30'/%3E%3Crect x='10' y='40' width='28' height='3' rx='1' fill='%23b5d45a'/%3E%3Crect x='10' y='90' width='28' height='3' rx='1' fill='%23b5d45a'/%3E%3Crect x='10' y='140' width='28' height='3' rx='1' fill='%23b5d45a'/%3E%3Crect x='44' y='55' width='24' height='3' rx='1' fill='%23b5d45a'/%3E%3Crect x='44' y='110' width='24' height='3' rx='1' fill='%23b5d45a'/%3E%3Crect x='44' y='165' width='24' height='3' rx='1' fill='%23b5d45a'/%3E%3C/svg%3E");
+  background-size:80px 200px;}
+.specials::after{content:'';position:absolute;right:-80px;top:-80px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(143,173,60,.12) 0%,transparent 70%)}
+.spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px;position:relative;z-index:1}
+.scard{background:rgba(255,255,255,.04);border:1px solid rgba(143,173,60,.15);
+  border-radius:16px;padding:26px 22px;position:relative;transition:all .22s}
+.scard:hover{background:rgba(143,173,60,.07);border-color:rgba(143,173,60,.35)}
+.scard-icon{font-size:34px;margin-bottom:13px}
+.scard h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:#fff;margin-bottom:8px}
+.scard p{font-size:13px;color:rgba(255,255,255,.48);line-height:1.82}
+.scard-price{margin-top:15px;display:inline-block;padding:4px 13px;border-radius:18px;
+  background:rgba(143,173,60,.15);color:var(--bamboo2);
+  font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;
+  border:1px solid rgba(143,173,60,.25)}
+.sbadge{position:absolute;top:14px;right:14px;
+  background:linear-gradient(135deg,#5a7a28,#8fad3c);color:#fff;
+  padding:3px 10px;border-radius:18px;font-size:11px;font-weight:600}
+
+/* ══ TESTIMONIALS ══ */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px}
+.tcard{background:#fff;border-radius:16px;padding:24px 22px;
+  border:1px solid rgba(143,173,60,.12);box-shadow:0 2px 16px var(--shadow);
+  position:relative;overflow:hidden}
+.tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#5a7a28,#8fad3c,#b5d45a)}
+.tcard-stars{color:var(--bamboo);font-size:13px;margin-bottom:11px;letter-spacing:1.5px}
+.tcard-text{font-size:13.5px;color:var(--muted);line-height:1.82;font-style:italic;margin-bottom:14px}
+.tcard-text::before{content:'"';font-family:'Cormorant Garamond',serif;font-size:38px;
+  color:var(--bamboo);opacity:.28;line-height:0;vertical-align:-13px;margin-right:3px}
+.tcard-author{display:flex;align-items:center;gap:10px}
+.tcard-av{width:37px;height:37px;border-radius:50%;
+  background:linear-gradient(135deg,#5a7a28,#8fad3c);
+  display:flex;align-items:center;justify-content:center;font-size:17px}
+.tcard-name{font-size:13px;font-weight:600;color:var(--ink)}
+.tcard-loc{font-size:11px;color:var(--muted)}
+
+/* ══ BOOKING CTA ══ */
+.booking-cta{background:linear-gradient(160deg,#0e1608 0%,#1a2a0a 50%,#111608 100%);
+  padding:96px 5%;text-align:center;position:relative;overflow:hidden}
+.booking-cta::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(143,173,60,.1) 0%,transparent 58%)}
+.cta-wrap{position:relative;z-index:2;max-width:580px;margin:0 auto}
+.cta-wrap .stag{justify-content:center;color:var(--bamboo2)}
+.cta-wrap .stag::before,.cta-wrap .stag::after{background:var(--bamboo2);opacity:.4}
+.cta-wrap .stitle{color:#fff;text-align:center}
+.cta-wrap .ssub{color:rgba(255,255,255,.45);margin:0 auto 36px;text-align:center}
+.cta-info{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:38px}
+.cta-item{text-align:center}
+.cta-item .ci-icon{font-size:20px;margin-bottom:5px}
+.cta-item .ci-lbl{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+.cta-item .ci-val{font-size:13.5px;color:rgba(255,255,255,.75);margin-top:2px;font-weight:500}
+.big-book-btn{display:inline-flex;align-items:center;gap:12px;
+  padding:17px 40px;border-radius:48px;border:none;
+  background:linear-gradient(135deg,#4a6420,#8fad3c);color:#fff;
+  font-size:16px;cursor:pointer;letter-spacing:.2px;
+  box-shadow:0 8px 32px rgba(90,122,40,.45);transition:all .28s;position:relative;overflow:hidden}
+.big-book-btn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.14));opacity:0;transition:opacity .28s}
+.big-book-btn:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(90,122,40,.56)}
+.big-book-btn:hover::before{opacity:1}
+.pr{position:absolute;inset:0;border-radius:48px;
+  border:2px solid rgba(143,173,60,.5);animation:ripple 2.2s ease-out infinite}
+
+/* ══ FOOTER ══ */
+footer{background:#080f04;padding:48px 5% 26px;
+  border-top:1px solid rgba(143,173,60,.1)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:44px;margin-bottom:36px}
+.fbrand{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
+  color:#fff;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.fbrand em{color:var(--bamboo2);font-style:normal}
+.fdesc{font-size:13px;color:rgba(255,255,255,.32);line-height:1.9;max-width:270px}
+.ftitle{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:15px}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
+.flinks a{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .18s}
+.flinks a:hover{color:var(--bamboo2)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.fcopy{font-size:12px;color:rgba(255,255,255,.22)}
+
+/* ══ FAB ══ */
+.fab{position:fixed;bottom:26px;right:26px;z-index:500;
+  width:60px;height:60px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,#4a6420,#8fad3c);
+  color:#fff;font-size:26px;cursor:pointer;
+  box-shadow:0 6px 26px rgba(74,100,32,.44);
+  display:flex;align-items:center;justify-content:center;transition:all .28s}
+.fab::before{content:'';position:absolute;inset:0;border-radius:50%;
+  border:2px solid rgba(143,173,60,.45);animation:ripple 2.6s ease-out infinite}
+.fab:hover{transform:scale(1.09);box-shadow:0 10px 34px rgba(74,100,32,.55)}
+.fab-tip{position:absolute;right:68px;background:#0e1608;color:#e8f0c8;
+  padding:7px 13px;border-radius:8px;font-size:13px;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,.28);opacity:0;transform:translateX(5px);
+  transition:all .22s;pointer-events:none;border:1px solid rgba(143,173,60,.2)}
+.fab-tip::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);
+  border:5px solid transparent;border-left-color:#0e1608;border-right:none}
+.fab:hover .fab-tip{opacity:1;transform:translateX(0)}
+
+/* ══ CHAT MODAL ══ */
+.chat-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;
+  display:none;align-items:flex-end;justify-content:flex-end;
+  padding:20px 22px;backdrop-filter:blur(3px);animation:fadeIn .2s ease}
+.chat-ov.open{display:flex}
+.chat-modal{width:390px;max-width:calc(100vw - 44px);height:590px;max-height:calc(100vh - 40px);
+  background:#fff;border-radius:24px;
+  box-shadow:0 24px 80px rgba(0,0,0,.32);
+  display:flex;flex-direction:column;overflow:hidden;
+  animation:slideUp .33s cubic-bezier(.22,.68,0,1.2)}
+.ch{background:linear-gradient(135deg,#2d4a10,#4a7a20,#3d6418);
+  padding:15px 17px;display:flex;align-items:center;gap:11px;
+  flex-shrink:0;position:relative;overflow:hidden}
+.ch::before{content:'';position:absolute;inset:0;opacity:.08;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='100'%3E%3Crect x='5' width='4' height='100' rx='2' fill='%23b5d45a'/%3E%3Crect x='14' y='10' width='3' height='90' rx='1' fill='%238fad3c'/%3E%3Crect x='24' y='5' width='4' height='95' rx='2' fill='%23b5d45a'/%3E%3C/svg%3E");
+  background-size:40px 100px;}
+.ch::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.07),transparent 48%)}
+.ch-av{width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.15);
+  border:1.5px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;position:relative;z-index:1}
+.ch-info{flex:1;position:relative;z-index:1}
+.ch-name{color:#fff;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700}
+.ch-sub{color:rgba(255,255,255,.6);font-size:11px;margin-top:1px;display:flex;align-items:center;gap:5px}
+.chdot{width:6px;height:6px;border-radius:50%;background:#b5d45a;
+  box-shadow:0 0 6px #b5d45a;animation:pulse 2s infinite}
+.ch-close{width:30px;height:30px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.11);color:#fff;font-size:14px;cursor:pointer;
+  position:relative;z-index:1;transition:background .18s;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ch-close:hover{background:rgba(255,255,255,.2)}
+.cmsgs{flex:1;overflow-y:auto;padding:11px 11px 5px;display:flex;flex-direction:column;gap:9px}
+.cmsgs::-webkit-scrollbar{width:3px}
+.cmsgs::-webkit-scrollbar-thumb{background:#c0d890}
+.cmsg{display:flex;align-items:flex-end;gap:7px;animation:fadeUp .28s ease}
+.cmsg.user{flex-direction:row-reverse}
+.cav{width:29px;height:29px;border-radius:9px;flex-shrink:0;
+  background:linear-gradient(135deg,#3a5a14,#6a9a28);
+  display:flex;align-items:center;justify-content:center;font-size:13px}
+.cbbl{max-width:77%;padding:10px 13px;font-size:13px;line-height:1.68;
+  border-radius:4px 16px 16px 16px;
+  background:#f0f7e4;color:var(--ink2);border:1px solid rgba(143,173,60,.15)}
+.cbbl.user{background:linear-gradient(135deg,#3a5a14,#6a9a28);color:#fff;
+  border-radius:16px 4px 16px 16px;border:none}
+.ctime{font-size:10px;opacity:.38;margin-top:3px;text-align:right;font-family:monospace}
+.typing-row{display:flex;gap:7px;align-items:flex-end}
+.typing-bbl{background:#f0f7e4;padding:11px 15px;border-radius:4px 16px 16px 16px;
+  border:1px solid rgba(143,173,60,.15);display:flex;gap:4px;align-items:center}
+.tdot{width:6px;height:6px;border-radius:50%;background:#8fad3c}
+.tdot:nth-child(1){animation:shimmer 1.2s .0s infinite}
+.tdot:nth-child(2){animation:shimmer 1.2s .2s infinite}
+.tdot:nth-child(3){animation:shimmer 1.2s .4s infinite}
+.cquick{padding:0 11px 5px;display:flex;gap:5px;overflow-x:auto;flex-shrink:0}
+.cquick::-webkit-scrollbar{height:0}
+.cqbtn{flex-shrink:0;border:1px solid rgba(143,173,60,.3);background:#fff;color:var(--bamboo-dark);
+  padding:5px 11px;border-radius:15px;font-size:11.5px;cursor:pointer;white-space:nowrap;transition:all .18s}
+.cqbtn:hover{background:var(--bamboo);color:#fff;border-color:var(--bamboo)}
+.cinput-area{padding:9px 11px 13px;background:#f4f8ec;
+  border-top:1px solid rgba(143,173,60,.15);flex-shrink:0}
+.cinput-box{display:flex;gap:6px;align-items:flex-end;background:#fff;
+  border-radius:20px;padding:4px 4px 4px 13px;
+  border:1.5px solid rgba(143,173,60,.3);transition:border-color .18s;
+  box-shadow:0 2px 10px rgba(20,26,9,.07)}
+.cinput-box:focus-within{border-color:var(--bamboo)}
+#chatInp{flex:1;border:none;outline:none;background:transparent;
+  color:var(--ink2);font-size:13px;resize:none;padding:6px 0;
+  max-height:78px;line-height:1.6;overflow-y:auto}
+.cibtn{width:33px;height:33px;border-radius:50%;border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;cursor:pointer;flex-shrink:0;transition:all .18s}
+.cibtn.voice{background:rgba(143,173,60,.12);color:var(--bamboo-dark)}
+.cibtn.voice.on{background:linear-gradient(135deg,#e53935,#ef5350);color:#fff;animation:pulse 1s infinite}
+.cibtn.send{background:linear-gradient(135deg,#3a5a14,#6a9a28);color:#fff}
+.cibtn.send:disabled{background:#e0e8d0;color:#a0b080;cursor:default}
+.cibtn.send:not(:disabled):hover{transform:scale(1.1)}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  .about-grid{grid-template-columns:1fr;gap:34px}
+  .spec-grid{grid-template-columns:1fr 1fr}
+  .testi-grid{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .hero-stats{display:none}
+}
+@media(max-width:600px){
+  .spec-grid,.testi-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .chat-ov{padding:0;align-items:flex-end;justify-content:center}
+  .chat-modal{width:100%;border-radius:24px 24px 0 0;height:80vh}
+}
+
+.avail-badge{display:inline-block;margin-top:8px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.avail-badge.ok{background:#e8f5e0;color:#3a6010;border:1px solid #a0c870}
+.avail-badge.no{background:#feeee8;color:#a03010;border:1px solid #f0a090}
+.avail-badge.cancel{background:#f0f0f0;color:#606060;border:1px solid #c8c8c8}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">
+      <div class="ns" style="height:22px"></div>
+      <div class="ns" style="height:28px"></div>
+      <div class="ns" style="height:18px"></div>
+    </div>
+    Bamboo Dine
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">আমাদের গল্প</a></li>
+    <li><a href="#menu">মেনু</a></li>
+    <li><a href="#specials">স্পেশাল</a></li>
+    <li><a href="#booking">বুকিং</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openChat()">🪑 টেবিল বুক করুন</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <!-- Animated bamboo stalks -->
+  <div class="bamboo-left" style="opacity:.18">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1px;animation:sway 4s ease-in-out infinite">
+      <div style="width:14px;flex:1;min-height:300px;background:linear-gradient(90deg,#3a5a14,#6a9a28,#4a7a1a);border-radius:7px 7px 0 0;position:relative">
+        <div style="position:absolute;top:60px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+        <div style="position:absolute;top:120px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+        <div style="position:absolute;top:180px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+        <div style="position:absolute;top:240px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1px;animation:sway 5s ease-in-out 1s infinite;margin-left:14px">
+      <div style="width:10px;flex:1;min-height:220px;background:linear-gradient(90deg,#2d4a10,#5a8a22);border-radius:5px 5px 0 0;position:relative">
+        <div style="position:absolute;top:50px;left:0;right:0;height:2px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:110px;left:0;right:0;height:2px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:170px;left:0;right:0;height:2px;background:#a0c848;opacity:.4"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;animation:swayR 6s ease-in-out .5s infinite;margin-left:10px">
+      <div style="width:8px;flex:1;min-height:260px;background:linear-gradient(90deg,#3a5a14,#5a8a20);border-radius:4px 4px 0 0;position:relative">
+        <div style="position:absolute;top:70px;left:0;right:0;height:1.5px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:140px;left:0;right:0;height:1.5px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:210px;left:0;right:0;height:1.5px;background:#a0c848;opacity:.4"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bamboo-right" style="opacity:.18">
+    <div style="display:flex;flex-direction:column;align-items:center;animation:swayR 5s ease-in-out .8s infinite;margin-right:10px">
+      <div style="width:8px;flex:1;min-height:240px;background:linear-gradient(90deg,#3a5a14,#5a8a20);border-radius:4px 4px 0 0;position:relative">
+        <div style="position:absolute;top:65px;left:0;right:0;height:1.5px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:130px;left:0;right:0;height:1.5px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:195px;left:0;right:0;height:1.5px;background:#a0c848;opacity:.4"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;animation:sway 4.5s ease-in-out infinite;margin-right:14px">
+      <div style="width:14px;flex:1;min-height:310px;background:linear-gradient(90deg,#3a5a14,#6a9a28,#4a7a1a);border-radius:7px 7px 0 0;position:relative">
+        <div style="position:absolute;top:60px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+        <div style="position:absolute;top:130px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+        <div style="position:absolute;top:200px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+        <div style="position:absolute;top:270px;left:0;right:0;height:2px;background:#b5d45a;opacity:.4"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;animation:sway 6s ease-in-out 1.2s infinite">
+      <div style="width:10px;flex:1;min-height:200px;background:linear-gradient(90deg,#2d4a10,#5a8a22);border-radius:5px 5px 0 0;position:relative">
+        <div style="position:absolute;top:55px;left:0;right:0;height:2px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:115px;left:0;right:0;height:2px;background:#a0c848;opacity:.4"></div>
+        <div style="position:absolute;top:175px;left:0;right:0;height:2px;background:#a0c848;opacity:.4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="eyebrow">🎋 ঢাকার সেরা বাংলা রান্নাঘর 🎋</div>
+    <h1>বাঁশের ছায়ায়<br/><em>ঐতিহ্যের স্বাদ</em></h1>
+    <p class="hero-sub">প্রকৃতির কোলে বসে উপভোগ করুন খাঁটি বাংলা রান্নার স্বাদ। তাজা উপাদান, ঐতিহ্যবাহী রেসিপি — Bamboo Dine-এ আসুন।</p>
+    <div class="hero-btns">
+      <button class="btn-bamboo" onclick="openChat()">🪑 এখনই টেবিল বুক করুন</button>
+      <button class="btn-ghost" onclick="document.querySelector('#menu').scrollIntoView({behavior:'smooth'})">মেনু দেখুন →</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">৮+</div><div class="hstat-l">বছরের অভিজ্ঞতা</div></div>
+    <div class="hstat"><div class="hstat-n">১২০+</div><div class="hstat-l">মেনু আইটেম</div></div>
+    <div class="hstat"><div class="hstat-n">৫০০০+</div><div class="hstat-l">সন্তুষ্ট অতিথি</div></div>
+    <div class="hstat"><div class="hstat-n">৪.৯★</div><div class="hstat-l">গড় রেটিং</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="mitem">🎋 কাচ্চি বিরিয়ানি<span class="mdot"></span></span>
+    <span class="mitem">মাটন রোস্ট<span class="mdot"></span></span>
+    <span class="mitem">ইলিশ ভাপা<span class="mdot"></span></span>
+    <span class="mitem">মোরগ পোলাও<span class="mdot"></span></span>
+    <span class="mitem">চিংড়ি মালাইকারি<span class="mdot"></span></span>
+    <span class="mitem">খাসির রেজালা<span class="mdot"></span></span>
+    <span class="mitem">ভর্তা থালি<span class="mdot"></span></span>
+    <span class="mitem">🎋 রসমালাই<span class="mdot"></span></span>
+    <span class="mitem">কাচ্চি বিরিয়ানি<span class="mdot"></span></span>
+    <span class="mitem">মাটন রোস্ট<span class="mdot"></span></span>
+    <span class="mitem">ইলিশ ভাপা<span class="mdot"></span></span>
+    <span class="mitem">মোরগ পোলাও<span class="mdot"></span></span>
+    <span class="mitem">চিংড়ি মালাইকারি<span class="mdot"></span></span>
+    <span class="mitem">খাসির রেজালা<span class="mdot"></span></span>
+    <span class="mitem">ভর্তা থালি<span class="mdot"></span></span>
+    <span class="mitem">🎋 রসমালাই<span class="mdot"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" style="background:var(--cream)">
+  <div style="text-align:center">
+    <div class="stag" style="justify-content:center">আমাদের গল্প</div>
+    <h2 class="stitle" style="text-align:center;margin:0 auto;max-width:500px">বাঁশবনের ছায়ায় <em>অনন্য অভিজ্ঞতা</em></h2>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-visual">
+      <div class="about-img">
+        <div class="about-img-inner">
+          <img src="https://asiantrails.b-cdn.net/wp-content/uploads/2020/07/indonesia-bamboo-forest-restaurant-1600x900-1.jpg" alt="Bengali Food" style="width:100%;height:100%;object-fit:cover;border-radius:20px"/>
+        </div>
+      </div>
+      <div class="about-badge"><span class="bn">২০১৭</span><span class="bl">থেকে চলছে</span></div>
+    </div>
+    <div class="about-text">
+      <div class="stag">Bamboo Dine</div>
+      <h2 class="stitle">প্রকৃতি ও <em>রান্নার</em> মেলবন্ধন</h2>
+      <p>২০১৭ সাল থেকে Bamboo Dine ঢাকার খাদ্যপ্রেমীদের কাছে একটি বিশেষ স্থান। বাঁশের সবুজ পরিবেশে আমরা পরিবেশন করি খাঁটি বাংলা রান্নার অপূর্ব স্বাদ।</p>
+      <p>আমাদের শেফ দল দেশের বিভিন্ন অঞ্চলের ঐতিহ্যবাহী রেসিপি সংগ্রহ করে আধুনিক পরিবেশে পরিবেশন করেন। প্রতিটি উপাদান তাজা, প্রতিটি মশলা খাঁটি।</p>
+      <div class="feats">
+        <div class="feat"><div class="feat-ic">🎋</div><div><strong>Bamboo পরিবেশ</strong><span>প্রকৃতির কোলে বিশেষ ডাইনিং অভিজ্ঞতা</span></div></div>
+        <div class="feat"><div class="feat-ic">🌿</div><div><strong>তাজা উপাদান</strong><span>প্রতিদিন বাজার থেকে আনা তাজা সবজি ও মাংস</span></div></div>
+        <div class="feat"><div class="feat-ic">👨‍🍳</div><div><strong>অভিজ্ঞ শেফ</strong><span>১৫+ বছর অভিজ্ঞ রাঁধুনির দল</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-sec reveal" id="menu">
+  <div style="text-align:center">
+    <div class="stag" style="justify-content:center">আমাদের মেনু</div>
+    <h2 class="stitle" style="text-align:center">যা খেলে মনে <em>থাকে</em></h2>
+    <p class="ssub" style="text-align:center;margin:0 auto">১২০+ পদ — প্রতিটিতে রয়েছে আলাদা গল্প</p>
+  </div>
+  <div class="menu-tabs">
+    <button class="mtab active" onclick="filterMenu('all',this)">সব পদ</button>
+    <button class="mtab" onclick="filterMenu('rice',this)">🍚 বিরিয়ানি</button>
+    <button class="mtab" onclick="filterMenu('fish',this)">🐟 মাছ</button>
+    <button class="mtab" onclick="filterMenu('meat',this)">🥩 মাংস</button>
+    <button class="mtab" onclick="filterMenu('veg',this)">🥦 ভর্তা</button>
+    <button class="mtab" onclick="filterMenu('dessert',this)">🍮 মিষ্টি</button>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+</section>
+
+<!-- SPECIALS -->
+<section class="specials reveal" id="specials">
+  <div style="text-align:center;position:relative;z-index:1">
+    <div class="stag" style="justify-content:center;color:var(--bamboo2)">বিশেষ অফার</div>
+    <h2 class="stitle" style="text-align:center;color:#fff">আজকের <em style="color:var(--bamboo2)">স্পেশাল</em></h2>
+    <p class="ssub" style="text-align:center;color:rgba(255,255,255,.42);margin:0 auto">সীমিত সময়ের জন্য বিশেষ ছাড় ও কম্বো</p>
+  </div>
+  <div class="spec-grid">
+    <div class="scard"><div class="sbadge">হট ডিল</div>
+      <div class="scard-icon">🍛</div>
+      <h3>ফ্যামিলি কাচ্চি প্যাকেজ</h3>
+      <p>৪ জনের পূর্ণ কাচ্চি সেট — সালাদ, বোরহানি ও মিষ্টিসহ</p>
+      <span class="scard-price">৳ ১,৮০০ (সাশ্রয় ৳৪০০)</span>
+    </div>
+    <div class="scard"><div class="sbadge">নতুন</div>
+      <div class="scard-icon">🐟</div>
+      <h3>ইলিশ উৎসব থালি</h3>
+      <p>ইলিশ ভাপা + ইলিশ ভাজা + সরষে ইলিশ — সিজনের সেরা</p>
+      <span class="scard-price">৳ ৮৫০</span>
+    </div>
+    <div class="scard">
+      <div class="scard-icon">🎂</div>
+      <h3>বার্থডে ডিনার প্যাকেজ</h3>
+      <p>বিশেষ সাজানো টেবিল + কেক + ৬ পদের ডিনার</p>
+      <span class="scard-price">৳ ৩,৫০০</span>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="reveal" style="background:var(--cream)">
+  <div style="text-align:center">
+    <div class="stag" style="justify-content:center">অতিথিদের কথা</div>
+    <h2 class="stitle" style="text-align:center">তারা যা <em>বলেন</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="tcard reveal">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-text">কাচ্চি বিরিয়ানি খেয়ে মনে হলো মায়ের হাতের রান্না। এত authentic স্বাদ ঢাকায় কমই পাওয়া যায়।</p>
+      <div class="tcard-author"><div class="tcard-av">👨</div><div><div class="tcard-name">রাফিউল ইসলাম</div><div class="tcard-loc">ধানমন্ডি, ঢাকা</div></div></div>
+    </div>
+    <div class="tcard reveal">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-text">Bamboo পরিবেশে ডিনার করার অভিজ্ঞতা সত্যিই অনন্য। পরিবার নিয়ে বারবার আসি।</p>
+      <div class="tcard-author"><div class="tcard-av">👩</div><div><div class="tcard-name">নাহিদা আক্তার</div><div class="tcard-loc">মিরপুর, ঢাকা</div></div></div>
+    </div>
+    <div class="tcard reveal">
+      <div class="tcard-stars">★★★★☆</div>
+      <p class="tcard-text">AI দিয়ে টেবিল বুক করা একদম সহজ। ইলিশ ভাপার স্বাদ অতুলনীয়।</p>
+      <div class="tcard-author"><div class="tcard-av">👨‍💼</div><div><div class="tcard-name">তানভীর হোসেন</div><div class="tcard-loc">গুলশান, ঢাকা</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING CTA -->
+<section class="booking-cta" id="booking">
+  <div class="cta-wrap reveal">
+    <div class="stag" style="justify-content:center">টেবিল রিজার্ভেশন</div>
+    <h2 class="stitle">আজই <em>আপনার টেবিল</em> বুক করুন</h2>
+    <p class="ssub">AI সহকারী বাঁশু মাত্র ২ মিনিটে টেবিল বুক করে দেবে। কনফার্মেশন সরাসরি ইমেইলে।</p>
+    <div class="cta-info">
+      <div class="cta-item"><div class="ci-icon">🕐</div><div class="ci-lbl">খোলার সময়</div><div class="ci-val">সন্ধ্যা ৬টা – রাত ১১টা</div></div>
+      <div class="cta-item"><div class="ci-icon">📅</div><div class="ci-lbl">সপ্তাহের দিন</div><div class="ci-val">শনি – বৃহস্পতি</div></div>
+      <div class="cta-item"><div class="ci-icon">📞</div><div class="ci-lbl">ফোন</div><div class="ci-val">০১৭০০-০০০০০০</div></div>
+      <div class="cta-item"><div class="ci-icon">📍</div><div class="ci-lbl">ঠিকানা</div><div class="ci-val">ধানমন্ডি, ঢাকা</div></div>
+    </div>
+    <button class="big-book-btn" onclick="openChat()">
+      <div class="pr"></div>
+      🎋 টেবিল বুকিং শুরু করুন <span style="font-size:19px">→</span>
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="fbrand">🎋 <em>Bamboo</em> Dine</div>
+      <p class="fdesc">বাঁশবনের ছায়ায় ঐতিহ্যবাহী বাংলা রান্নার স্বাদ — ২০১৭ সাল থেকে।</p>
+    </div>
+    <div>
+      <div class="ftitle">লিংক</div>
+      <ul class="flinks">
+        <li><a href="#about">আমাদের সম্পর্কে</a></li>
+        <li><a href="#menu">মেনু</a></li>
+        <li><a href="#specials">স্পেশাল</a></li>
+        <li><a href="#booking">বুকিং</a></li>
+        <li><a href="/admin">Admin Panel</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ftitle">যোগাযোগ</div>
+      <ul class="flinks">
+        <li><a href="#">📍 ধানমন্ডি ২৭, ঢাকা-১২০৫</a></li>
+        <li><a href="#">📞 ০১৭০০-০০০০০০</a></li>
+        <li><a href="#">✉️ <span class="__cf_email__" data-cfemail="95fcfbf3fad5f7f4f8f7fafaf1fcfbf0bbf6faf8">[email&#160;protected]</span></a></li>
+        <li><a href="#">🕐 সন্ধ্যা ৬টা – রাত ১১টা</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="fcopy">© ২০২৫ Bamboo Dine · সকল অধিকার সংরক্ষিত</span>
+    <span class="fcopy">Made with ❤️ in Dhaka</span>
+  </div>
+</footer>
+
+<!-- FAB -->
+<button class="fab" onclick="openChat()" id="fab">
+  🎋
+  <span class="fab-tip">টেবিল বুক করুন</span>
+</button>
+
+<!-- CHAT MODAL -->
+<div class="chat-ov" id="chatOv" onclick="ovClick(event)">
+  <div class="chat-modal">
+    <div class="ch">
+      <div class="ch-av">🎋</div>
+      <div class="ch-info">
+        <div class="ch-name">Bamboo AI</div>
+        <div class="ch-sub"><div class="chdot"></div> Bamboo Dine · AI বুকিং সহকারী</div>
+      </div>
+      <button class="ch-close" onclick="closeChat()">✕</button>
+    </div>
+
+    <div class="cmsgs" id="cmsgs"></div>
+    <div class="cquick" id="cquick">
+      <button class="cqbtn" onclick="qsend('আজ রাতে টেবিল বুক করতে চাই')">🎋 আজ রাতে</button>
+      <button class="cqbtn" onclick="qsend('৬ জনের পারিবারিক ডিনার বুক করতে চাই')">👨‍👩‍👧 পারিবারিক</button>
+      <button class="cqbtn" onclick="qsend('জন্মদিনের জন্য বিশেষ টেবিল চাই')">🎂 জন্মদিন</button>
+    </div>
+    <div class="cinput-area">
+      <div class="cinput-box">
+        <textarea id="chatInp" rows="1" placeholder="বার্তা লিখুন…"
+          oninput="ares(this);ubtn()" onkeydown="hkey(event)"></textarea>
+        <button class="cibtn voice" id="vbtn" onclick="tvoi()">🎤</button>
+        <button class="cibtn send" id="sbtn" onclick="csend()" disabled>➤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const MENU = [
+  {cat:'rice', name:'কাচ্চি বিরিয়ানি',  price:'৳ ৩৮০', desc:'খাঁটি মশলায় রান্না ঐতিহ্যবাহী কাচ্চি — পাতলা আলু ও বোরহানিসহ', tags:['popular','spicy']},
+  {cat:'rice', name:'মোরগ পোলাও',        price:'৳ ৩২০', desc:'জাফরান ও গোলাপজলে সুগন্ধী পোলাও, দেশি মুরগির টুকরোসহ',         tags:['popular']},
+  {cat:'fish', name:'ইলিশ ভাপা',         price:'৳ ৪৫০', desc:'সরষে ও কাঁচা মরিচে মাখানো ইলিশ — পাতার মধ্যে ভাপে রান্না',    tags:['popular','spicy']},
+  {cat:'fish', name:'চিংড়ি মালাইকারি',  price:'৳ ৫২০', desc:'নারকেল দুধে রান্না বাগদা চিংড়ি — মখমলের মতো ঝোল',              tags:['popular']},
+  {cat:'fish', name:'রুই মাছের ঝোল',    price:'৳ ২৮০', desc:'কাঁচা হলুদ ও পাঁচফোড়নে রান্না রুই মাছ',                         tags:[]},
+  {cat:'meat', name:'খাসির রেজালা',      price:'৳ ৪৮০', desc:'দুধ ও বাদামের ঘন ঝোলে মসৃণ খাসির মাংস',                         tags:['popular']},
+  {cat:'meat', name:'মাটন রোস্ট',        price:'৳ ৫৫০', desc:'আস্ত রানের টুকরো ধীরে ধীরে ভাজা — মশলা মাখানো খাস্তা বাইরে',   tags:['spicy']},
+  {cat:'meat', name:'চিকেন রেজালা',      price:'৳ ৩২০', desc:'সফেদ ঝোলে দেশি মুরগি — হালকা মশলার অনন্য স্বাদ',               tags:[]},
+  {cat:'veg',  name:'ভর্তা থালি',        price:'৳ ২২০', desc:'৭ রকম ভর্তা — আলু, বেগুন, টমেটো, শুঁটকি ও আরও',                tags:['popular']},
+  {cat:'veg',  name:'শাক ঘণ্ট',          price:'৳ ১৮০', desc:'মিশ্র শাক ও সবজির ঘণ্ট — পাঁচফোড়ন দেওয়া',                      tags:[]},
+  {cat:'dessert', name:'রসমালাই',        price:'৳ ১২০', desc:'নরম ছানার রসমালাই — ঠান্ডা দুধের রসে ডুবানো',                    tags:['popular']},
+  {cat:'dessert', name:'পায়েস',          price:'৳ ১০০', desc:'খেজুরের গুড়ে রান্না চালের পায়েস — দাদির হাতের মতো',           tags:[]},
+];
+
+const IMG_MAP = {
+  'কাচ্চি বিরিয়ানি': 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80&fit=crop',
+  'মোরগ পোলাও':       'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80&fit=crop',
+  'ইলিশ ভাপা':        'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80&fit=crop',
+  'চিংড়ি মালাইকারি': 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=500&q=80&fit=crop',
+  'রুই মাছের ঝোল':   'https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80&fit=crop',
+  'খাসির রেজালা':     'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80&fit=crop',
+  'মাটন রোস্ট':       'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80&fit=crop',
+  'চিকেন রেজালা':     'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80&fit=crop',
+  'ভর্তা থালি':       'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80&fit=crop',
+  'শাক ঘণ্ট':         'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80&fit=crop',
+  'রসমালাই':          'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=500&q=80&fit=crop',
+  'পায়েস':            'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500&q=80&fit=crop',
+};
+
+let activeCat='all';
+function filterMenu(cat,btn){
+  activeCat=cat;
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMenu();
+}
+function tagHtml(t){
+  const m={popular:'🔥 সেরা',spicy:'🌶️ ঝাল'};
+  return `<span class="mtag ${t}">${m[t]||t}</span>`;
+}
+function renderMenu(){
+  const items = activeCat==='all' ? MENU : MENU.filter(m=>m.cat===activeCat);
+  document.getElementById('menuGrid').innerHTML = items.map(m=>{
+    const imgSrc = IMG_MAP[m.name] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80&fit=crop';
+    return `
+    <div class="mcard reveal">
+      <div class="mcard-img">
+        <div class="mcard-img-loader"><div class="mcard-img-loader-inner"></div></div>
+        <img src="${imgSrc}" alt="${m.name}"
+          onload="this.previousElementSibling.classList.add('loaded')"
+          onerror="this.previousElementSibling.classList.add('loaded');this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80&fit=crop'"
+          loading="lazy"/>
+      </div>
+      <div class="mcard-body">
+        <div class="mcard-row">
+          <div class="mcard-name">${m.name}</div>
+          <div class="mcard-price">${m.price}</div>
+        </div>
+        <div class="mcard-desc">${m.desc}</div>
+        <div class="mcard-tags">${m.tags.map(tagHtml).join('')}</div>
+      </div>
+    </div>`;
+  }).join('');
+  observeReveal();
+}
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>55);
+});
+function observeReveal(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  }),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}
+observeReveal();
+renderMenu();
+
+// ══════════════════════════════
+//  CHATBOT — calls /api/chat
+// ══════════════════════════════
+let hist=[], voiceOn=false, recog=null, quickGone=false;
+const nt=()=>new Date().toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'});
+
+(()=>{
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  recog=new SR(); recog.lang='bn-BD';
+  recog.onresult=e=>{document.getElementById('chatInp').value=e.results[0][0].transcript;ubtn();stopVoi();};
+  recog.onerror=recog.onend=stopVoi;
+})();
+
+function openChat(){
+  document.getElementById('chatOv').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(!hist.length) addBot("আসসালামু আলাইকুম! 🎋 Bamboo Dine-এ স্বাগতম!\n\nআমি Bamboo AI। মেনু দেখতে, বুকিং করতে বা বাতিল করতে — যেকোনো বিষয়ে সাহায্য করতে পারি।");
+}
+function closeChat(){
+  document.getElementById('chatOv').classList.remove('open');
+  document.body.style.overflow='';
+}
+function ovClick(e){if(e.target===document.getElementById('chatOv'))closeChat();}
+
+function addBot(txt,type=''){
+  const d=document.createElement('div');
+  d.className='cmsg bot';
+  let extra='';
+  if(type==='avail_ok')   extra=`<div class="avail-badge ok">✅ টেবিল খালি আছে</div>`;
+  if(type==='avail_no')   extra=`<div class="avail-badge no">❌ ওই সময়ে টেবিল নেই</div>`;
+  if(type==='cancelled')  extra=`<div class="avail-badge cancel">🚫 বুকিং বাতিল হয়েছে</div>`;
+  d.innerHTML=`<div class="cav">🎋</div><div class="cbbl bot">${txt.replace(/\n/g,'<br>')}${extra}<div class="ctime">${nt()}</div></div>`;
+  document.getElementById('cmsgs').appendChild(d);
+  scrollBot();
+}
+function addUser(txt){
+  const d=document.createElement('div');
+  d.className='cmsg user';
+  d.innerHTML=`<div class="cbbl user">${txt.replace(/\n/g,'<br>')}<div class="ctime">${nt()}</div></div>`;
+  document.getElementById('cmsgs').appendChild(d);
+  scrollBot();
+}
+function scrollBot(){const m=document.getElementById('cmsgs');m.scrollTop=m.scrollHeight;}
+function showTyping(){
+  const d=document.createElement('div');
+  d.className='typing-row';d.id='ctyping';
+  d.innerHTML=`<div class="cav">🎋</div><div class="typing-bbl"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>`;
+  document.getElementById('cmsgs').appendChild(d);scrollBot();
+}
+function hideTyping(){document.getElementById('ctyping')?.remove();}
+
+
+
+
+function ares(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,78)+'px';}
+function ubtn(){document.getElementById('sbtn').disabled=!document.getElementById('chatInp').value.trim();}
+function hkey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();csend();}}
+function qsend(t){document.getElementById('chatInp').value=t;ubtn();csend();}
+function tvoi(){if(!recog)return;if(voiceOn){recog.stop();stopVoi();}else{recog.start();setVoi(true);}}
+function setVoi(v){voiceOn=v;const b=document.getElementById('vbtn');b.textContent=v?'⏹':'🎤';b.classList.toggle('on',v);}
+function stopVoi(){setVoi(false);}
+function speak(txt){
+  if(!('speechSynthesis'in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(txt.substring(0,200));
+  u.lang='bn-BD';u.rate=.9;speechSynthesis.speak(u);
+}
+
+async function csend(){
+  const inp=document.getElementById('chatInp');
+  const txt=inp.value.trim(); if(!txt)return;
+  inp.value='';inp.style.height='auto';ubtn();
+  if(!quickGone){document.getElementById('cquick').style.display='none';quickGone=true;}
+  addUser(txt);
+  hist.push({role:'user',content:txt});
+  showTyping();
+  try{
+    const r = await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages: hist.map(h=>({role:h.role,content:h.content}))})
+    });
+    const data = await r.json();
+    hideTyping();
+    if(!r.ok) throw new Error(data.detail||'Server error');
+
+    const reply  = data.reply  || '';
+    const action = data.action || null;
+
+    hist.push({role:'assistant', content: reply});
+
+    // Handle actions
+    if(action){
+      if(action.type==='booking_confirmed'){
+        const b = action.booking;
+        const msg = reply ||
+          `🎋 আপনার বুকিং সফলভাবে কনফার্ম হয়েছে! ধন্যবাদ ${b.name}!\n\n` +
+          `আপনার Booking ID: **${b.id}**\n` +
+          `📅 ${b.date} | 🕐 ${b.time} | 🪑 ${b.table} | 👥 ${b.guests} জন\n\n` +
+          `কনফার্মেশন ইমেইল পাঠানো হয়েছে। আর কিছু জানতে চান?`;
+        addBot(msg,'');
+      } else if(action.type==='availability' && action.available){
+        addBot(reply,'avail_ok');
+      } else if(action.type==='availability' && !action.available){
+        addBot(reply,'avail_no');
+      } else if(action.type==='booking_cancelled'){
+        addBot(reply,'cancelled');
+      } else {
+        addBot(reply,'');
+      }
+    } else {
+      addBot(reply,'');
+    }
+  } catch(e){
+    hideTyping();
+    addBot('দুঃখিত, একটু সমস্যা হয়েছে। আবার চেষ্টা করুন।','');
+  }
+}
+</script>
+</body>
+</html>

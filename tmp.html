@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bamboo Dine — বুকিং কনফার্মেশন</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #e8f0d8;
+      font-family: Georgia, &quot;Tiro Bangla&quot;, serif;
+    "
+  >
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="background-color: #e8f0d8; padding: 32px 16px"
+    >
+      <tr>
+        <td align="center">
+          <table
+            width="560"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              max-width: 560px;
+              width: 100%;
+              background: #ffffff;
+              border-radius: 20px;
+              overflow: hidden;
+              box-shadow: 0 8px 40px rgba(30, 48, 16, 0.18);
+            "
+          >
+            <!-- ══ HEADER ══ -->
+            <tr>
+              <td
+                style="
+                  background: linear-gradient(
+                    160deg,
+                    #1a2e0a 0%,
+                    #2d5010 50%,
+                    #3a6a14 100%
+                  );
+                  padding: 0;
+                  position: relative;
+                  overflow: hidden;
+                "
+              >
+                <!-- Bamboo stripe texture -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td
+                      style="
+                        padding: 36px 40px 28px;
+                        text-align: center;
+                        position: relative;
+                      "
+                    >
+                      <!-- Decorative bamboo lines left -->
+                      <div
+                        style="
+                          position: absolute;
+                          left: 0;
+                          top: 0;
+                          bottom: 0;
+                          width: 18px;
+                          background: repeating-linear-gradient(
+                            180deg,
+                            rgba(181, 212, 90, 0) 0px,
+                            rgba(181, 212, 90, 0) 28px,
+                            rgba(181, 212, 90, 0.12) 28px,
+                            rgba(181, 212, 90, 0.12) 32px
+                          );
+                        "
+                      ></div>
+                      <!-- Decorative bamboo lines right -->
+                      <div
+                        style="
+                          position: absolute;
+                          right: 0;
+                          top: 0;
+                          bottom: 0;
+                          width: 18px;
+                          background: repeating-linear-gradient(
+                            180deg,
+                            rgba(181, 212, 90, 0) 0px,
+                            rgba(181, 212, 90, 0) 28px,
+                            rgba(181, 212, 90, 0.12) 28px,
+                            rgba(181, 212, 90, 0.12) 32px
+                          );
+                        "
+                      ></div>
+                      <!-- Logo emoji -->
+                      <div
+                        style="
+                          font-size: 52px;
+                          line-height: 1;
+                          margin-bottom: 10px;
+                        "
+                      >
+                        🎋
+                      </div>
+                      <!-- Brand name -->
+                      <div
+                        style="
+                          font-family: Georgia, serif;
+                          font-size: 28px;
+                          font-weight: 700;
+                          color: #ffffff;
+                          letter-spacing: 1px;
+                          margin-bottom: 4px;
+                        "
+                      >
+                        Bamboo Dine
+                      </div>
+                      <!-- Tagline -->
+                      <div
+                        style="
+                          font-size: 13px;
+                          color: rgba(210, 235, 160, 0.75);
+                          letter-spacing: 2px;
+                          font-style: italic;
+                        "
+                      >
+                        বাঁশের ছায়ায় ঐতিহ্যের স্বাদ
+                      </div>
+                      <!-- Gold divider -->
+                      <div
+                        style="
+                          margin: 18px auto 0;
+                          width: 60px;
+                          height: 2px;
+                          background: linear-gradient(
+                            90deg,
+                            transparent,
+                            #c8962a,
+                            transparent
+                          );
+                        "
+                      ></div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- ══ GREEN BANNER ══ -->
+            <tr>
+              <td
+                style="
+                  background: #4a7a20;
+                  padding: 12px 40px;
+                  text-align: center;
+                "
+              >
+                <span
+                  style="
+                    color: #d6f0a0;
+                    font-size: 14px;
+                    font-weight: bold;
+                    letter-spacing: 0.5px;
+                  "
+                >
+                  ✅ &nbsp; আপনার টেবিল বুকিং কনফার্ম হয়েছে!
+                </span>
+              </td>
+            </tr>
+            <!-- ══ BODY ══ -->
+            <tr>
+              <td style="padding: 36px 40px 28px">
+                <!-- Greeting -->
+                <p
+                  style="
+                    margin: 0 0 6px;
+                    font-size: 17px;
+                    font-weight: bold;
+                    color: #1e3010;
+                  "
+                >
+                  আসসালামু আলাইকুম,
+                  <span style="color: #4a7a20"
+                    >{{ $('Save to Google Sheets').item.json.Name }}</span
+                  >
+                  স্যার/ম্যাম 🙏
+                </p>
+                <p
+                  style="
+                    margin: 0 0 24px;
+                    font-size: 14px;
+                    color: #5a6a40;
+                    line-height: 1.9;
+                  "
+                >
+                  Bamboo Dine-এ আপনাকে স্বাগত জানাতে পেরে আমরা অত্যন্ত আনন্দিত।
+                  আপনার বুকিং সফলভাবে সম্পন্ন হয়েছে। নিচে বিস্তারিত দেওয়া হলো।
+                </p>
+                <!-- ── BOOKING ID HIGHLIGHT BOX ── -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="margin-bottom: 24px"
+                >
+                  <tr>
+                    <td
+                      style="
+                        background: linear-gradient(135deg, #1a2e0a, #3a6414);
+                        border-radius: 14px;
+                        padding: 20px 24px;
+                        text-align: center;
+                      "
+                    >
+                      <div
+                        style="
+                          font-size: 11px;
+                          color: rgba(210, 235, 160, 0.7);
+                          letter-spacing: 2px;
+                          text-transform: uppercase;
+                          margin-bottom: 8px;
+                        "
+                      >
+                        আপনার বুকিং আইডি
+                      </div>
+                      <div
+                        style="
+                          font-family: &quot;Courier New&quot;, monospace;
+                          font-size: 28px;
+                          font-weight: 700;
+                          color: #b5d45a;
+                          letter-spacing: 4px;
+                        "
+                      >
+                        {{ $('Save to Google Sheets').item.json.ID }}
+                      </div>
+                      <div
+                        style="
+                          margin-top: 10px;
+                          font-size: 12px;
+                          color: rgba(210, 235, 160, 0.6);
+                          line-height: 1.7;
+                        "
+                      >
+                        ⚠️ এই ID টি সংরক্ষণ করুন — পরে প্রয়োজন হতে পারে
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <!-- ── BOOKING DETAILS TABLE ── -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="
+                    border: 1px solid #b8d490;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    margin-bottom: 24px;
+                  "
+                >
+                  <!-- Table header -->
+                  <tr>
+                    <td
+                      colspan="2"
+                      style="
+                        background: #f0f8e4;
+                        padding: 10px 18px;
+                        font-size: 11px;
+                        font-weight: bold;
+                        color: #4a7a20;
+                        letter-spacing: 1.5px;
+                        text-transform: uppercase;
+                        border-bottom: 1px solid #b8d490;
+                      "
+                    >
+                      বুকিংয়ের বিবরণ
+                    </td>
+                  </tr>
+                  <!-- Row: Date -->
+                  <tr style="border-bottom: 1px solid #e8f2d8">
+                    <td
+                      style="
+                        padding: 13px 18px;
+                        width: 44%;
+                        background: #f7faf2;
+                      "
+                    >
+                      <span style="font-size: 16px">📅</span>
+                      <span
+                        style="
+                          font-size: 13px;
+                          color: #7a8a6a;
+                          margin-left: 6px;
+                        "
+                        >তারিখ</span
+                      >
+                    </td>
+                    <td
+                      style="
+                        padding: 13px 18px;
+                        background: #f7faf2;
+                        border-left: 1px solid #e8f2d8;
+                      "
+                    >
+                      <strong style="font-size: 14px; color: #1e3010"
+                        >{{ $('Save to Google Sheets').item.json.Date }}</strong
+                      >
+                    </td>
+                  </tr>
+                  <!-- Row: Time -->
+                  <tr style="border-bottom: 1px solid #e8f2d8">
+                    <td style="padding: 13px 18px; background: #ffffff">
+                      <span style="font-size: 16px">🕐</span>
+                      <span
+                        style="
+                          font-size: 13px;
+                          color: #7a8a6a;
+                          margin-left: 6px;
+                        "
+                        >সময়</span
+                      >
+                    </td>
+                    <td
+                      style="
+                        padding: 13px 18px;
+                        background: #ffffff;
+                        border-left: 1px solid #e8f2d8;
+                      "
+                    >
+                      <strong style="font-size: 14px; color: #1e3010"
+                        >{{ $('Save to Google Sheets').item.json.Time }}</strong
+                      >
+                    </td>
+                  </tr>
+                  <!-- Row: Guests -->
+                  <tr style="border-bottom: 1px solid #e8f2d8">
+                    <td style="padding: 13px 18px; background: #f7faf2">
+                      <span style="font-size: 16px">👥</span>
+                      <span
+                        style="
+                          font-size: 13px;
+                          color: #7a8a6a;
+                          margin-left: 6px;
+                        "
+                        >অতিথি সংখ্যা</span
+                      >
+                    </td>
+                    <td
+                      style="
+                        padding: 13px 18px;
+                        background: #f7faf2;
+                        border-left: 1px solid #e8f2d8;
+                      "
+                    >
+                      <strong style="font-size: 14px; color: #1e3010">
+                        {{ $('Save to Google Sheets').item.json.Guests }}
+                        জন</strong
+                      >
+                    </td>
+                  </tr>
+                  <!-- Row: Phone -->
+                  <tr>
+                    <td style="padding: 13px 18px; background: #ffffff">
+                      <span style="font-size: 16px">📞</span>
+                      <span
+                        style="
+                          font-size: 13px;
+                          color: #7a8a6a;
+                          margin-left: 6px;
+                        "
+                        >ফোন</span
+                      >
+                    </td>
+                    <td
+                      style="
+                        padding: 13px 18px;
+                        background: #ffffff;
+                        border-left: 1px solid #e8f2d8;
+                      "
+                    >
+                      <strong style="font-size: 14px; color: #1e3010"
+                        >{{ $('Save to Google Sheets').item.json.Phone
+                        }}</strong
+                      >
+                    </td>
+                  </tr>
+                </table>
+                <!-- ── CANCEL INSTRUCTIONS BOX ── -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="margin-bottom: 24px"
+                >
+                  <tr>
+                    <td
+                      style="
+                        background: #fff9e6;
+                        border: 1px solid #f0d080;
+                        border-radius: 12px;
+                        padding: 18px 20px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-size: 13px;
+                          font-weight: bold;
+                          color: #8a6000;
+                          margin-bottom: 8px;
+                        "
+                      >
+                        🔖 বুকিং বাতিল করতে চাইলে
+                      </div>
+                      <div
+                        style="
+                          font-size: 13px;
+                          color: #6a5000;
+                          line-height: 1.9;
+                        "
+                      >
+                        আমাদের ওয়েবসাইটের chatbot-এ গিয়ে নিচের মেসেজটি
+                        পাঠান:<br />
+                        <div
+                          style="
+                            margin: 10px 0;
+                            background: #fff3c0;
+                            border-radius: 8px;
+                            padding: 10px 14px;
+                            font-family: &quot;Courier New&quot;, monospace;
+                            font-size: 14px;
+                            color: #5a4000;
+                            letter-spacing: 1px;
+                            border-left: 3px solid #c8962a;
+                          "
+                        >
+                          আমার বুকিং বাতিল করতে চাই
+                        </div>
+                        Bot আপনাকে confirm করতে বলবে, তারপর আপনার বুকিং বাতিল হয়ে
+                        যাবে।
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <!-- ── THANK YOU NOTE ── -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="margin-bottom: 8px"
+                >
+                  <tr>
+                    <td
+                      style="
+                        background: #f0f8e4;
+                        border-radius: 12px;
+                        padding: 18px 22px;
+                        text-align: center;
+                      "
+                    >
+                      <div style="font-size: 22px; margin-bottom: 8px">🙏</div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: #3a5010;
+                          line-height: 1.9;
+                          font-weight: bold;
+                        "
+                      >
+                        আপনার বিশ্বাস ও ভালোবাসার জন্য আন্তরিক ধন্যবাদ!
+                      </div>
+                      <div
+                        style="
+                          font-size: 13px;
+                          color: #5a7030;
+                          line-height: 1.9;
+                          margin-top: 6px;
+                        "
+                      >
+                        আমরা আপনাকে সেরা অভিজ্ঞতা দিতে প্রতিশ্রুতিবদ্ধ।<br />
+                        অনুগ্রহ করে নির্ধারিত সময়ের <strong>১৫ মিনিট আগে</strong> আসার চেষ্টা করবেন!
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- ══ FOOTER ══ -->
+            <tr>
+              <td style="background: #1a2e0a; padding: 22px 40px">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="text-align: center">
+                      <div style="font-size: 22px; margin-bottom: 8px">🎋</div>
+                      <div
+                        style="
+                          font-size: 13px;
+                          font-weight: bold;
+                          color: #b5d45a;
+                          letter-spacing: 0.5px;
+                          margin-bottom: 10px;
+                        "
+                      >
+                        Bamboo Dine
+                      </div>
+                      <!-- Contact info -->
+                      <div
+                        style="
+                          font-size: 12px;
+                          color: rgba(210, 235, 160, 0.55);
+                          line-height: 2;
+                        "
+                      >
+                        📍 ধানমন্ডি ২৭, ঢাকা-১২০৫ &nbsp;·&nbsp; 📞 01700-000000
+                        &nbsp;·&nbsp; ✉️ info@bamboodine.com
+                      </div>
+                      <!-- Divider -->
+                      <div
+                        style="
+                          margin: 14px auto;
+                          width: 80px;
+                          height: 1px;
+                          background: rgba(181, 212, 90, 0.2);
+                        "
+                      ></div>
+                      <div
+                        style="font-size: 11px; color: rgba(255, 255, 255, 0.2)"
+                      >
+                        এই ইমেইলটি স্বয়ংক্রিয়ভাবে পাঠানো হয়েছে। সরাসরি reply
+                        করবেন না।
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <!-- End main table -->
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
